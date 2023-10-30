@@ -53,25 +53,94 @@
     function showpage(pageid) {
       var pos = $("#" + pageid).position().top;
       $("body").animate({ scrollTop: pos }, 500, "easeOutQuint");
+      document.title = pageid;
+      document.location.hash = pageid;
     }
   </script>
 
   <body>
     <div id="page1" class="page">
       <div class="menu">
-        <button class="home" onclick="showpage('page1');">Home</button>
-        <button class="about" onclick="showpage('page2');">About</button>
-        <button class="contact" onclick="showpage('page3');">Contact</button>
+        <button class="welcome" onclick="showpage('welcome');">Welcome</button>
+        <button class="boka" onclick="showpage('boka');">Boka</button>
+        <button class="history" onclick="showpage('history');">History</button>
+        <button class="search" onclick="showpage('search');">Search</button>
+        <button class="about" onclick="showpage('about');">About</button>
+        <button class="contact" onclick="showpage('contact');">Contact</button>
+        <button class="register" onclick="showpage('register');">
+          Register
+        </button>
+        <button class="logIn" onclick="showpage('logIn');">LogIn</button>
       </div>
-      <h1>Home</h1>
+
+      <div id="welcome" class="page">
+        <h1>Welcome</h1>
+        <p>
+          Det skall finnas en screen för inloggning/välkomst som är unik för
+          användaren liknande de som finns exempelvis på exempelvis Amazon.com
+          etc. Användaren skall endast behöva ange sitt kontonamn för att kunna
+          logga in på systemet (det skall inte finnas någon komplett inloggning
+          där lösenord måste anges).
+        </p>
+      </div>
     </div>
 
-    <div id="page2" class="page">
+    <div id="boka" class="page">
+      <h1>Boka</h1>
+      <p>
+        Det skall finnas en bokningssida där användaren utöver ett traditionellt
+        formulär kan kunna klicka på en grafisk representation av resurs eller
+        grafisk representation av positionerna i någon (tillgänglig) resurs för
+        att kunna göra bokningar. Den grafiska representationen av resurser är
+        inte del av Inlämningsuppgifter Scripting 2,0 hp.
+      </p>
+    </div>
+
+    <div id="history" class="page">
+      <h1>History</h1>
+      <p>
+        Det skall finnas en screen för bokningshistorik som listar kundens
+        genomförda bokningar. Att skriva html som visar en mockup på hur
+        bokningsdata för en användare skall representeras/visualiseras är
+        lämpligt här.
+      </p>
+    </div>
+
+    <div id="search" class="page">
+      <h1>Search</h1>
+      <p>
+        Det skall finnas en screen för sökningar på verksamhetens resurs-data
+        och/eller tillgänglighet för en resurs. Att skriva html som visar en
+        mockup på hur ett framtida sökresultat från Boknings-API skall
+        representeras/visualiseras är lämpligt här.
+      </p>
+    </div>
+    <div id="about" class="page">
       <h1>About</h1>
     </div>
 
-    <div id="page3" class="page">
+    <div id="contact" class="page">
       <h1>Contact</h1>
+    </div>
+
+    <div id="register" class="page">
+      <h1>Register</h1>
+      <p>
+        Det skall finnas en screen för kundregistrering där kunden registrerar
+        informationen om sitt konto, exempelvis förnamn, efternamn och adress.
+        På Denna sida skall validering senare implementeras.
+      </p>
+    </div>
+
+    <div id="login" class="page">
+      <h1>LogIn</h1>
+      <p>
+        Det skall finnas en screen för inloggning/välkomst som är unik för
+        användaren liknande de som finns exempelvis på exempelvis Amazon.com
+        etc. Användaren skall endast behöva ange sitt kontonamn för att kunna
+        logga in på systemet (det skall inte finnas någon komplett inloggning
+        där lösenord måste anges).
+      </p>
     </div>
   </body>
 </html>
