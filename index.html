@@ -53,8 +53,6 @@
     function showpage(pageid) {
       var pos = $("#" + pageid).position().top;
       $("body").animate({ scrollTop: pos }, 500, "easeOutQuint");
-      document.title = pageid;
-      document.location.hash = pageid;
     }
   </script>
 
