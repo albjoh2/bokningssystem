@@ -1,457 +1,246 @@
 <html>
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-    body {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      font-family: sans-serif;
-    }
-    #page1 {
-      background: #eee;
-    }
-    #page2 {
-      background: #eee;
-    }
-    #page3 {
-      background: #eee;
-    }
+  <head>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css"
+    />
+    <link rel="stylesheet" href="/resources/demos/style.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+    <script src="script.js" defer></script>
+    <script>
+      $(function () {
+        $("#accordion").accordion();
+      });
+    </script>
+    <link rel="shortcut icon" href="icon.svg" type="svg">
+  </head>
 
-    .page {
-      height: 100vh;
-      width: 80%;
-      max-width: 800px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      gap: 50px;
-    }
+  <body>
+    <button onclick="darkMode()" id="modeButton">
+      🌙
+    </button>
+    <div id="underlay" onclick="closedialog()"></div>
+    <div class="menu">
+      <img onclick="showpage('welcome');" src="icon.svg" alt="" style="height: 40px; align-self:center; left:50px; position: absolute; cursor: pointer;">
+      <button class="welcome" onclick="showpage('welcome');">Welcome</button>
+      <button class="booking" onclick="showpage('booking');">Booking</button>
+      <button class="history" onclick="showpage('history');">History</button>
+      <button class="search" onclick="showpage('search');">Search</button>
+      <button class="about" onclick="showpage('about');">About</button>
+      <button class="contact" onclick="showpage('contact');">Contact</button>
+      <button style="cursor: auto">|</button>
+      <button
+        class="register"
+        style="border: 1px #df6516 solid; padding: 0 10; border-radius: 50px"
+        onclick="showDialog('register');"
+      >
+        Register
+      </button>
+      <button
+        class="login"
+        onclick="showDialog('login');"
+      >
+        Login
+      </button>
+    </div>
 
-    .menu {
-      background: #353535;
-      position: fixed;
-      width: 100%;
-      display: flex;
-      align-items: end;
-      justify-content: end;
-      padding-right: 50px;
-    }
-    .menu > button {
-      font-size: 16px;
-      line-height: 32px;
-      margin: 16px;
-      color: #eee;
-
-      background: none;
-      border: none;
-      cursor: pointer;
-    }
-    h1 {
-      margin: 0;
-      padding-bottom: 30px;
-      text-align: center;
-      font-size: 96px;
-      line-height: 64px;
-      font-weight: 100;
-    }
-    .nyAnvForumlär {
-      display: flex;
-      flex-direction: column;
-      margin: 50px;
-    }
-    input {
-      padding: 5px;
-      margin-top: 3px;
-      border-radius: 10px;
-      border-width: 1px;
-      border-color: #aaa;
-      border-style: solid;
-    }
-    label {
-      margin: 10px;
-      display: flex;
-      flex-direction: column;
-    }
-    #checkboxlabel {
-      display: block;
-    }
-    #register {
-      display: none;
-      top: 10%;
-      bottom: 10%;
-    }
-    #login {
-      display: none;
-    }
-
-    #underlay {
-      display: none;
-      position: fixed;
-      background: #000a;
-      z-index: 50;
-      left: 0px;
-      top: 0px;
-      width: 100%;
-      height: 100%;
-    }
-    .dialog {
-      position: fixed;
-      left: 25%;
-      top: 25%;
-      right: 25%;
-      bottom: 25%;
-      background: #fafafa;
-      border-radius: 15px;
-      padding: 20px;
-      z-index: 500;
-    }
-    .error {
-      color: #f57;
-      font-size: 10px;
-    }
-  </style>
-
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
-
-  <script>
-    function updateHistory(token) {
-      history.pushState(token, "Titel: " + token, "");
-      document.title = token;
-      document.location.hash = token;
-    }
-
-    function showpage(pageid) {
-      var pos = $("#" + pageid).position().top;
-      $("body").animate({ scrollTop: pos }, 500, "easeOutQuint");
-
-      updateHistory(pageid);
-    }
-
-    function validate() {
-      let validated = true;
-      let pass1 = document.getElementById("pass");
-      let pass2 = document.getElementById("passAgain");
-      let checkbox = document.getElementById("checkbox");
-      if (pass1.value !== pass2.value) {
-        pass1.style.backgroundColor = "#f8a";
-        pass2.style.backgroundColor = "#f8a";
-        document.getElementById("passwordError").textContent =
-          "Passwords are not matching";
-        validated = false;
-      }
-      if (!checkbox.checked) {
-        checkbox.style.borderColor = "#f57";
-        checkbox.style.color = "#f57";
-        document.getElementById("checkboxError").textContent =
-          "You need to sell us all of your data to proceed";
-        validated = false;
-      }
-      if (validated === true) {
-        newName();
-      }
-    }
-
-    function liveValidation() {
-      let validated = true;
-      let pass1 = document.getElementById("pass");
-      let pass2 = document.getElementById("passAgain");
-      if (pass1.value !== pass2.value) {
-        pass1.style.backgroundColor = "#f8a";
-        pass2.style.backgroundColor = "#f8a";
-        document.getElementById("passwordError").textContent =
-          "Passwords are not matching";
-        validated = false;
-      } else {
-        pass1.style.backgroundColor = "#fff";
-        pass2.style.backgroundColor = "#fff";
-        document.getElementById("passwordError").textContent = "";
-      }
-    }
-
-    function newName() {
-      let username;
-      if (document.getElementById("username").value) {
-        username = document.getElementById("username");
-      } else if (document.getElementById("user").value) {
-        username = document.getElementById("user");
-      }
-      let welcomeMessage = document.getElementById("welcomeMessage");
-      welcomeMessage.textContent = "Welcome " + username.value;
-      document.querySelector(".login").textContent = "Hello " + username.value;
-      document.querySelector(".register").textContent = "";
-      showpage("welcome");
-      closedialog();
-    }
-
-    function showDialog(dialogid) {
-      var dialogs = document.getElementsByClassName("dialog");
-      for (dialog of dialogs) {
-        dialog.style.display = "none";
-      }
-      document.getElementById(dialogid).style.display = "block";
-      document.getElementById("underlay").style.display = "block";
-
-      if (document.getElementById("welcomeMessage").textContent) {
-        let welcomeMessage = document.getElementById("welcomeMessage");
-        welcomeMessage.textContent = "Welcome";
-        document.querySelector(".login").textContent = "Login";
-        document.querySelector(".register").textContent = "Register";
-      }
-    }
-
-    function closedialog() {
-      document.getElementById("underlay").style.display = "none";
-      document.getElementById("login").style.display = "none";
-      document.getElementById("register").style.display = "none";
-    }
-  </script>
-
-  <html>
-    <body>
-      <div id="underlay" onclick="closedialog()"></div>
-      <div class="menu">
-        <button class="welcome" onclick="showpage('welcome');">Welcome</button>
-        <button class="booking" onclick="showpage('booking');">Booking</button>
-        <button class="history" onclick="showpage('history');">History</button>
-        <button class="search" onclick="showpage('search');">Search</button>
-        <button class="about" onclick="showpage('about');">About</button>
-        <button class="contact" onclick="showpage('contact');">Contact</button>
-        <button style="cursor: auto">|</button>
-        <button
-          class="register"
-          style="background-color: #df6516; padding: 0 10; border-radius: 15px"
-          onclick="showDialog('register');"
-        >
-          Register
-        </button>
-        <button
-          class="login"
-          style="color: #df6516; font-weight: 900; margin: auto 0"
-          onclick="showDialog('login');"
-        >
-          Login
-        </button>
-      </div>
-
-      <div id="welcome" class="page">
-        <h1 id="welcomeMessage">Welcome</h1>
-        <div style="display: flex">
-          <div style="width: 50%">
-            <p style="margin: 30px; font-size: 44px">
-              Book exclusive conference rooms.
-            </p>
-          </div>
-          <div style="width: 100%">
-            <?xml version="1.0" encoding="UTF-8"?>
-            <svg
-              id="Lager_1"
-              data-name="Lager 1"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 1547.35 837.28"
-            >
-              <defs>
-                <style>
-                  .cls-1 {
-                    fill: #ffc280;
-                  }
-
-                  .cls-2 {
-                    fill: #8c6239;
-                  }
-
-                  .cls-3 {
-                    fill: #a67c52;
-                  }
-
-                  .cls-4 {
-                    fill: #42210b;
-                  }
-
-                  .cls-5 {
-                    fill: #449aff;
-                  }
-
-                  .cls-6 {
-                    fill: #44abff;
-                  }
-
-                  .cls-7 {
-                    fill: #754c24;
-                  }
-                </style>
-              </defs>
-              <path
-                class="cls-6"
-                d="m753.01,248.26c312.99-28.74,535-467,714-107,179,360,21,570-107,635-128,65-889,130-1085-100C146.68,525.68-67.99,158.26,21.01,51.26c89-107,536,215,732,197Z"
-              />
-              <path
-                class="cls-5"
-                d="m1022.8,832.78c-46.43-91.01-154.37-266.8-317.3-315.02-166.63-49.32-282.08,135.7-329.8,232.4,162.09,80.51,429.25,95.38,647.1,82.62Z"
-              />
-              <ellipse
-                class="cls-2"
-                cx="864.51"
-                cy="366.26"
-                rx="538"
-                ry="291.5"
-              />
-              <ellipse
-                class="cls-3"
-                cx="856.51"
-                cy="347.26"
-                rx="538"
-                ry="291.5"
-              />
-              <circle class="cls-4" cx="884.23" cy="754.19" r="66.48" />
-              <circle class="cls-7" cx="879.8" cy="746.8" r="66.48" />
-              <path
-                class="cls-1"
-                d="m404.3,44.12c1.93,0,1.93-3,0-3s-1.93,3,0,3h0Z"
-              />
-              <circle class="cls-4" cx="602.05" cy="715.77" r="66.48" />
-              <circle class="cls-7" cx="597.61" cy="708.39" r="66.48" />
-              <circle class="cls-4" cx="328.73" cy="578.38" r="66.48" />
-              <circle class="cls-7" cx="324.3" cy="570.99" r="66.48" />
-              <circle class="cls-4" cx="1166.41" cy="715.77" r="66.48" />
-              <circle class="cls-7" cx="1161.98" cy="708.39" r="66.48" />
-              <circle class="cls-4" cx="1405.75" cy="581.33" r="66.48" />
-              <circle class="cls-7" cx="1401.32" cy="573.94" r="66.48" />
-            </svg>
-          </div>
+    <div id="welcome" class="page">
+      <h1 id="welcomeMessage">Welcome</h1>
+      <div style="display: flex">
+        <div style="width: 50%">
+          <p style="margin: 30px; font-size: 44px; font-weight: 100">
+            Book exclusive conference rooms.
+          </p>
+        </div>
+        <div style="width: 100%">
+          <img src="illustration.svg" alt="">
         </div>
       </div>
+    </div>
 
-      <div id="booking" class="page">
-        <h1>Booking</h1>
-        <p>
-          Det skall finnas en bokningssida där användaren utöver ett
-          traditionellt formulär kan kunna klicka på en grafisk representation
-          av resurs eller grafisk representation av positionerna i någon
-          (tillgänglig) resurs för att kunna göra bokningar. Den grafiska
-          representationen av resurser är inte del av Inlämningsuppgifter
-          Scripting 2,0 hp.
-        </p>
-      </div>
-
-      <div id="history" class="page">
-        <h1>History</h1>
-        <p>
-          Det skall finnas en screen för bokningshistorik som listar kundens
-          genomförda bokningar. Att skriva html som visar en mockup på hur
-          bokningsdata för en användare skall representeras/visualiseras är
-          lämpligt här.
-        </p>
-        <table style="width: 100%; text-align: center; margin: 20px">
-          <thead>
-            <tr>
-              <th>Boknings id</th>
-              <th>Rum</th>
-              <th>Från</th>
-              <th>Till</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>5433</td>
-              <td>4</td>
-              <td>30/11 -23 kl 14:00</td>
-              <td>30/11 -23 kl 15:00</td>
-            </tr>
-            <tr>
-              <td>5434</td>
-              <td>2</td>
-              <td>12/12 -23 kl 11:00</td>
-              <td>12/12 -23 kl 12:00</td>
-            </tr>
-            <tr>
-              <td>5443</td>
-              <td>4</td>
-              <td>20/12 -23 kl 13:00</td>
-              <td>20/12 -23 kl 15:00</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div id="search" class="page">
-        <h1>Search</h1>
-        <p>
-          Det skall finnas en screen för sökningar på verksamhetens resurs-data
-          och/eller tillgänglighet för en resurs. Att skriva html som visar en
-          mockup på hur ett framtida sökresultat från Boknings-API skall
-          representeras/visualiseras är lämpligt här.
-        </p>
-      </div>
-
-      <div id="about" class="page">
-        <h1>About</h1>
-      </div>
-
-      <div id="contact" class="page">
-        <h1>Contact</h1>
-      </div>
-
-      <div id="register" class="dialog">
-        <h3>Register</h3>
-        <p>
-          Det skall finnas en screen för kundregistrering där kunden registrerar
-          informationen om sitt konto, exempelvis förnamn, efternamn och adress.
-          På Denna sida skall validering senare implementeras.
-        </p>
-        <label for="email"
-          >Email:
-          <input type="email" name="email" id="" />
+    <div id="booking" class="page">
+      <h1>Booking</h1>
+      <form>
+        <label for="date">
+          <input type="date" name="date" id="date" />
         </label>
-        <label for="user"
-          >Username:
-          <input type="text" name="user" id="user" />
+        <label for="room">
+          <input oninput="validateRoom()" type="number" name="room" id="room" />
+          <p id="roomError" class="error"></p>
         </label>
-        <label for="pass"
-          >Password:
-          <input type="password" name="pass" id="pass" />
-        </label>
-        <label for="passAgain"
-          >Confirm password:
-          <input
-            type="password"
-            name="passAgain"
-            id="passAgain"
-            oninput="liveValidation()"
-          />
-          <p id="passwordError" class="error"></p>
-        </label>
-        <label id="checkboxLabel" for="accept"
-          >Accept <a style="color: black" href="http://">integritypolicy</a>:
-          <input type="checkbox" name="accept" id="checkbox" />
-          <p id="checkboxError" class="error"></p>
-        </label>
-        <input type="submit" onclick="validate()" value="Skapa användare" />
-      </div>
+      </form>
+      <p>
+        Det skall finnas en bokningssida där användaren utöver ett traditionellt
+        formulär kan kunna klicka på en grafisk representation av resurs eller
+        grafisk representation av positionerna i någon (tillgänglig) resurs för
+        att kunna göra bokningar. Den grafiska representationen av resurser är
+        inte del av Inlämningsuppgifter Scripting 2,0 hp.
+      </p>
+    </div>
 
-      <div id="login" class="dialog">
-        <h3>LogIn</h3>
-        <div style="display: flex; flex-direction: column">
-          <label for="username" style="font-size: 12">
-            Username
-            <input type="text" name="username" id="username" />
-          </label>
-          <label for="password" style="font-size: 12">
-            Password
-            <input type="password" name="password" id="password" />
-          </label>
-          <input
-            type="submit"
-            value="Logga in"
-            onclick="newName()"
-            style="margin: 5px; cursor: pointer"
-          />
+    <div id="history" class="page">
+      <h1>History</h1>
+      <p>
+        Det skall finnas en screen för bokningshistorik som listar kundens
+        genomförda bokningar. Att skriva html som visar en mockup på hur
+        bokningsdata för en användare skall representeras/visualiseras är
+        lämpligt här.
+      </p>
+      <table style="width: 100%; text-align: center; margin: 20px">
+        <thead>
+          <tr>
+            <th>Boknings id</th>
+            <th>Rum</th>
+            <th>Från</th>
+            <th>Till</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>5433</td>
+            <td>4</td>
+            <td>30/11 -23 kl 14:00</td>
+            <td>30/11 -23 kl 15:00</td>
+          </tr>
+          <tr>
+            <td>5434</td>
+            <td>2</td>
+            <td>12/12 -23 kl 11:00</td>
+            <td>12/12 -23 kl 12:00</td>
+          </tr>
+          <tr>
+            <td>5443</td>
+            <td>4</td>
+            <td>20/12 -23 kl 13:00</td>
+            <td>20/12 -23 kl 15:00</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div id="search" class="page">
+      <h1>Search</h1>
+      <p>
+        Det skall finnas en screen för sökningar på verksamhetens resurs-data
+        och/eller tillgänglighet för en resurs. Att skriva html som visar en
+        mockup på hur ett framtida sökresultat från Boknings-API skall
+        representeras/visualiseras är lämpligt här.
+      </p>
+      <form action="" style="display: flex; justify-content: center; gap: 5px">
+        <input type="search" name="" id="" />
+        <input type="submit" value="Search" />
+      </form>
+
+      <div id="accordion">
+        <h3>Room 1</h3>
+        <div class="accordion"
+
+          "
+        >
+          <p><b>Size:</b> 25 kvm</p>
+          <p><b>People:</b> 8</p>
+
+          <p><b>Screen:</b> TV 50'</p>
+          <p><b>items:</b> HDMI, USB-C, AUX</p>
+        </div>
+        <h3>Room 2</h3>
+        <div
+        class="accordion"
+
+        >
+          <p><b>Size:</b> 10 kvm</p>
+          <p><b>People:</b> 4</p>
+
+          <p><b>Screen:</b> TV 30'</p>
+          <p><b>items:</b> HDMI, USB-C, AUX</p>
+        </div>
+        <h3>Room 3</h3>
+        <div
+        class="accordion"
+
+        >
+          <p><b>Size:</b> 15 kvm</p>
+          <p><b>People:</b> 6</p>
+
+          <p><b>Screen:</b> Projector 100'</p>
+          <p><b>items:</b> HDMI, USB-C, AUX</p>
         </div>
       </div>
-    </body>
-  </html>
+    </div>
+
+    <div id="about" class="page">
+      <h1>About</h1>
+    </div>
+
+    <div id="contact" class="page">
+      <h1>Contact</h1>
+    </div>
+
+    <div id="register" class="dialog">
+      <h3>Register</h3>
+      <p>
+        Det skall finnas en screen för kundregistrering där kunden registrerar
+        informationen om sitt konto, exempelvis förnamn, efternamn och adress.
+        På Denna sida skall validering senare implementeras.
+      </p>
+      <label for="email"
+        >Email:
+        <input
+          type="email"
+          name="email"
+          id="email"
+          onfocusout="validateEmail()"
+        />
+        <p id="emailError" class="error"></p>
+      </label>
+      <label for="user"
+        >Username:
+        <input type="text" name="user" id="user" />
+      </label>
+      <label for="pass"
+        >Password:
+        <input type="password" name="pass" id="pass" />
+      </label>
+      <label for="passAgain"
+        >Confirm password:
+        <input
+          type="password"
+          name="passAgain"
+          id="passAgain"
+          oninput="liveValidation()"
+        />
+        <p id="passwordError" class="error"></p>
+      </label>
+      <label id="checkboxLabel" for="accept"
+        >Accept <a style="color: black" href="http://">integritypolicy</a>:
+        <input type="checkbox" name="accept" id="checkbox" />
+        <p id="checkboxError" class="error"></p>
+      </label>
+      <input type="submit" onclick="validate()" value="Skapa användare" />
+    </div>
+
+    <div id="login" class="dialog">
+      <h3>LogIn</h3>
+      <div style="display: flex; flex-direction: column">
+        <label for="username" style="font-size: 12">
+          Username
+          <input type="text" name="username" id="username" />
+        </label>
+        <label for="password" style="font-size: 12">
+          Password
+          <input type="password" name="password" id="password" />
+        </label>
+        <input
+          type="submit"
+          value="Logga in"
+          onclick="newName()"
+          style="margin: 5px; cursor: pointer"
+        />
+      </div>
+    </div>
+  </body>
 </html>
