@@ -143,3 +143,7 @@ function closedialog() {
   document.getElementById("login").style.display = "none";
   document.getElementById("register").style.display = "none";
 }
+
+$(function () {
+  $("#accordion").accordion();
+});
