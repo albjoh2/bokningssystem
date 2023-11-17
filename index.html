@@ -1,13 +1,16 @@
 <html>
   <head>
-    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8" />
+    <title>Conference booking</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="style.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
     <link
       rel="stylesheet"
       href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css"
     />
-    <link rel="stylesheet" href="/resources/demos/style.css" />
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
     <script src="script.js" defer></script>
@@ -16,16 +19,25 @@
         $("#accordion").accordion();
       });
     </script>
-    <link rel="shortcut icon" href="icon.svg" type="svg">
+    <link rel="shortcut icon" href="icon.svg" type="svg" />
   </head>
 
   <body>
-    <button onclick="darkMode()" id="modeButton">
-      🌙
-    </button>
+    <button onclick="darkMode()" id="modeButton">🌙</button>
     <div id="underlay" onclick="closedialog()"></div>
     <div class="menu">
-      <img onclick="showpage('welcome');" src="icon.svg" alt="" style="height: 30px; align-self:center; left:50px; position: absolute; cursor: pointer;">
+      <img
+        onclick="showpage('welcome');"
+        src="icon.svg"
+        alt=""
+        style="
+          height: 30px;
+          align-self: center;
+          left: 50px;
+          position: absolute;
+          cursor: pointer;
+        "
+      />
       <button class="welcome" onclick="showpage('welcome');">Welcome</button>
       <button class="booking" onclick="showpage('booking');">Booking</button>
       <button class="history" onclick="showpage('history');">History</button>
@@ -40,12 +52,7 @@
       >
         Register
       </button>
-      <button
-        class="login"
-        onclick="showDialog('login');"
-      >
-        Login
-      </button>
+      <button class="login" onclick="showDialog('login');">Login</button>
     </div>
 
     <div id="welcome" class="page">
@@ -57,7 +64,7 @@
           </p>
         </div>
         <div style="width: 100%">
-          <img src="illustration.svg" alt="">
+          <img src="illustration.svg" alt="" />
         </div>
       </div>
     </div>
@@ -124,53 +131,64 @@
 
     <div id="search" class="page">
       <h1>Search</h1>
-      <p>
-        Det skall finnas en screen för sökningar på verksamhetens resurs-data
-        och/eller tillgänglighet för en resurs. Att skriva html som visar en
-        mockup på hur ett framtida sökresultat från Boknings-API skall
-        representeras/visualiseras är lämpligt här.
-      </p>
-      <form action="" style="display: flex; justify-content: center; gap: 5px">
-        <input type="search" name="" id="" />
-        <input type="submit" value="Search" />
-      </form>
+      <div
+        class="actionbox"
+        style="
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          gap: 5px;
+        "
+      >
+        ID:<input
+          type="text"
+          name="resIDS"
+          id="resIDS"
+          onchange="searchResources()"
+          onkeyup="searchResources()"
+        />
+        Name:<input
+          type="text"
+          name="resNameS"
+          id="resNameS"
+          onchange="searchResources()"
+          onkeyup="searchResources()"
+        />
+        Location:<input
+          type="text"
+          name="resLocationS"
+          id="resLocationS"
+          onchange="searchResources()"
+          onkeyup="searchResources()"
+        />
+        Company:<input
+          type="text"
+          name="resCompanyS"
+          id="resCompanyS"
+          onchange="searchResources()"
+          onkeyup="searchResources()"
+        />
+        Full Text:<input
+          type="text"
+          name="resFulltextS"
+          id="resFulltextS"
+          onchange="searchResources()"
+          onkeyup="searchResources()"
+        />
+        <input
+          type="button"
+          onclick="searchResources();"
+          value="Search Resource"
+        />
+        <span class="actionheading">Result</span>
+        <div id="accordion" class="OutputDivSearchR">
 
-      <div id="accordion">
-        <h3>Room 1</h3>
-        <div class="accordion"
-
-          "
-        >
-          <p><b>Size:</b> 25 kvm</p>
-          <p><b>People:</b> 8</p>
-
-          <p><b>Screen:</b> TV 50'</p>
-          <p><b>items:</b> HDMI, USB-C, AUX</p>
-        </div>
-        <h3>Room 2</h3>
-        <div
-        class="accordion"
-
-        >
-          <p><b>Size:</b> 10 kvm</p>
-          <p><b>People:</b> 4</p>
-
-          <p><b>Screen:</b> TV 30'</p>
-          <p><b>items:</b> HDMI, USB-C, AUX</p>
-        </div>
-        <h3>Room 3</h3>
-        <div
-        class="accordion"
-
-        >
-          <p><b>Size:</b> 15 kvm</p>
-          <p><b>People:</b> 6</p>
-
-          <p><b>Screen:</b> Projector 100'</p>
-          <p><b>items:</b> HDMI, USB-C, AUX</p>
         </div>
       </div>
-    </div>
+
+
+
+
 
     <div id="about" class="page">
       <h1>About</h1>
@@ -182,11 +200,19 @@
 
     <div id="register" class="dialog">
       <h3>Register</h3>
-      <p>
-        Det skall finnas en screen för kundregistrering där kunden registrerar
-        informationen om sitt konto, exempelvis förnamn, efternamn och adress.
-        På Denna sida skall validering senare implementeras.
-      </p>
+      <label for="customerfnameC"
+        >Firstname:
+        <input type="text" name="customerfnameC" id="customerfnameC" />
+      </label>
+      <label for="customerlnameC"
+        >Lastname:
+        <input type="text" name="customerlnameC" id="customerlnameC" />
+      </label>
+      <label for="customeraddressC"
+        >Address:
+        <input type="text" name="customeraddressC" id="customeraddressC" />
+      </label>
+
       <label for="email"
         >Email:
         <input
@@ -220,7 +246,7 @@
         <input type="checkbox" name="accept" id="checkbox" />
         <p id="checkboxError" class="error"></p>
       </label>
-      <input type="submit" onclick="validate()" value="Skapa användare" />
+      <input type="button" onclick="validate()" value="Skapa användare" />
     </div>
 
     <div id="login" class="dialog">
@@ -244,5 +270,3 @@
     </div>
   </body>
 </html>
-
-
