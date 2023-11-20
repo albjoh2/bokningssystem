@@ -118,14 +118,31 @@ label {
 .accordion {
   background-color: #aaa;
   border-radius: 0px 0px 5px 5px;
-  padding: 50px;
+  padding: 20px;
   color: #fff;
 }
+
+h3 {
+  background-color: #353535;
+  color: #eee;
+  padding: 20px;
+}
+
+#accordion {
+  display: flex;
+  justify-content: space-around;
+}
+
+#divOutput {
+  margin-top: 20px;
+}
+
 .ui-state-default {
   border: 1px solid #999 !important;
   background: inherit !important;
   color: inherit !important;
 }
+
 .ui-state-active {
   border: 1px solid #999 !important;
   background: #a9a9a9 !important;

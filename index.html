@@ -71,22 +71,20 @@
 
     <div id="booking" class="page">
       <h1>Booking</h1>
-      <form>
-        <label for="date">
-          <input type="date" name="date" id="date" />
-        </label>
-        <label for="room">
-          <input oninput="validateRoom()" type="number" name="room" id="room" />
-          <p id="roomError" class="error"></p>
-        </label>
-      </form>
-      <p>
-        Det skall finnas en bokningssida där användaren utöver ett traditionellt
-        formulär kan kunna klicka på en grafisk representation av resurs eller
-        grafisk representation av positionerna i någon (tillgänglig) resurs för
-        att kunna göra bokningar. Den grafiska representationen av resurser är
-        inte del av Inlämningsuppgifter Scripting 2,0 hp.
-      </p>
+
+      <label for="room"
+        >Room
+        <input
+          oninput="validateRoom()"
+          type="number"
+          name="resIDA"
+          id="resIDA"
+        />
+        <p id="roomError" class="error"></p>
+      </label>
+      <input value="Search" type="button" onclick="searchAvailability()" />
+
+      <div id="OutputDivSearchA"></div>
     </div>
 
     <div id="history" class="page">
@@ -132,7 +130,6 @@
     <div id="search" class="page">
       <h1>Search</h1>
       <div
-        class="actionbox"
         style="
           display: flex;
           flex-direction: column;
@@ -147,7 +144,7 @@
           onchange="searchResources()"
           onkeyup="searchResources()"
         />
-        Name:<input
+        People:<input
           type="text"
           name="resNameS"
           id="resNameS"
@@ -161,34 +158,23 @@
           onchange="searchResources()"
           onkeyup="searchResources()"
         />
-        Company:<input
+        Items:<input
           type="text"
           name="resCompanyS"
           id="resCompanyS"
           onchange="searchResources()"
           onkeyup="searchResources()"
         />
-        Full Text:<input
-          type="text"
-          name="resFulltextS"
-          id="resFulltextS"
-          onchange="searchResources()"
-          onkeyup="searchResources()"
-        />
+
         <input
           type="button"
           onclick="searchResources();"
           value="Search Resource"
         />
-        <span class="actionheading">Result</span>
-        <div id="accordion" class="OutputDivSearchR">
 
-        </div>
+        <div id="divOutput"></div>
       </div>
-
-
-
-
+    </div>
 
     <div id="about" class="page">
       <h1>About</h1>

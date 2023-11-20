@@ -97,13 +97,25 @@ function newName() {
   } else if (document.getElementById("user").value) {
     username = document.getElementById("user");
   }
+  localStorage.setItem(username, username.value);
   let welcomeMessage = document.getElementById("welcomeMessage");
-  welcomeMessage.textContent = "Welcome " + username.value;
-  document.querySelector(".login").textContent = "Hello " + username.value;
-  document.querySelector(".register").style.display = "none";
+  if (localStorage.getItem(username)) {
+    welcomeMessage.textContent = "Welcome " + localStorage.getItem(username);
+    document.querySelector(".login").textContent = "Hello " + username.value;
+    document.querySelector(".register").style.display = "none";
+  }
+
   showpage("welcome");
 
   closedialog();
+}
+
+let welcomeMessage = document.getElementById("welcomeMessage");
+if (localStorage.getItem(username)) {
+  welcomeMessage.textContent = "Welcome " + localStorage.getItem(username);
+  document.querySelector(".login").textContent =
+    "Hello " + localStorage.getItem(username);
+  document.querySelector(".register").style.display = "none";
 }
 
 let isDarkMode = true;
@@ -131,11 +143,13 @@ function showDialog(dialogid) {
   document.getElementById(dialogid).style.display = "block";
   document.getElementById("underlay").style.display = "block";
 
-  if (document.getElementById("welcomeMessage").textContent) {
+  if (localStorage.getItem(username)) {
     let welcomeMessage = document.getElementById("welcomeMessage");
     welcomeMessage.textContent = "Welcome";
     document.querySelector(".login").textContent = "Login";
     document.querySelector(".register").style.display = "block";
+    localStorage.removeItem(username);
+    closedialog();
   }
 }
 
@@ -221,7 +235,6 @@ function searchResources() {
     name: document.getElementById("resNameS").value,
     location: document.getElementById("resLocationS").value,
     company: document.getElementById("resCompanyS").value,
-    fulltext: document.getElementById("resFulltextS").value,
     id: document.getElementById("resIDS").value,
   };
 
@@ -248,32 +261,99 @@ function showResources(returnedData) {
   console.log(returnedData);
   // Fix characters in XML notation to HTML notation
   fixChars(returnedData);
-
   // An XML DOM document is returned from AJAX
   var resultset = returnedData.childNodes[0];
-  var output = "";
+  var output = "<div id='accordion'>";
   // Iterate over all nodes in root node (i.e. resources)
   for (i = 0; i < resultset.childNodes.length; i++) {
     // Iterate over all child nodes of that node that are resource nodes
     if (resultset.childNodes.item(i).nodeName == "resource") {
       // Retrieve data from resource nodes
       var resource = resultset.childNodes.item(i);
-      output += "<h3>Room 1</h3><div class='accordion' >";
       output +=
-        "<p><b>Size</b>" + resource.attributes["size"].value + "kvm</p>";
+        "<div style='width:33%;'><h3>Room " +
+        resource.attributes["id"].value.slice(8) +
+        "</h3><div class='accordion' >";
       output +=
-        "<p><b>Size</b>" + resource.attributes["company"].value + "kvm</p>";
+        "<p><b>Size</b> " + resource.attributes["size"].value + "kvm</p>";
       output +=
-        "<p><b>Size</b>" + resource.attributes["name"].value + "kvm</p>";
+        "<p><b>Items</b> " + resource.attributes["company"].value + "</p>";
       output +=
-        "<p><b>Size</b>" + resource.attributes["location"].value + "kvm</p>";
+        "<p><b>People</b> " + resource.attributes["name"].value + "</p>";
       output +=
-        "<p><b>Size</b>" + resource.attributes["category"].value + "kvm</p>";
+        "<p><b>Location</b> " + resource.attributes["location"].value + "</p>";
+      output +=
+        "<p><b>Screen</b> " + resource.attributes["category"].value + "'</p>";
 
-      output += "</div>";
+      output += "</div></div>";
+    }
+  }
+  output += "</div>";
+
+  var div = document.getElementById("divOutput");
+  div.innerHTML = output;
+}
+
+function searchAvailability() {
+  var input = {
+    resid: `a22albjo${document.getElementById("resIDA").value}`,
+    type: apptype, // Only show bookings for your webbapplication using the apptype
+  };
+
+  fetch("./booking/getavailability_search_XML.php", {
+    method: "POST", // or 'PUT'
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(input),
+  })
+    .then(function (response) {
+      // first then()
+      if (response.ok) return response.text();
+      throw new Error(response.statusText);
+    })
+    .then(function (text) {
+      showAvailability(
+        new window.DOMParser().parseFromString(text, "text/xml")
+      );
+    })
+    .catch(function (error) {
+      // catch
+      alert("Request failed\n" + error);
+    });
+}
+
+function showAvailability(returnedData) {
+  // Fix characters in XML notation to HTML notation
+  fixChars(returnedData);
+  // An XML DOM document is returned from AJAX
+  var resultset = returnedData.childNodes[0];
+  var output = "<table>";
+  // Iterate over all nodes in root node (i.e. resources)
+  for (i = 0; i < resultset.childNodes.length; i++) {
+    // Iterate over all child nodes of that node that are resource nodes
+    if (resultset.childNodes.item(i).nodeName == "availability") {
+      // Retrieve data from resource nodes
+      var avail = resultset.childNodes.item(i);
+      output +=
+        "<tr class='actiontablerow' onclick='alert(\"" +
+        avail.attributes["resourceID"].value +
+        "\")'>";
+      output +=
+        "<td>" + avail.attributes["resourceID"].value.slice(8) + "</td>";
+      output += "<td>" + avail.attributes["company"].value + "</td>";
+      output += "<td>" + avail.attributes["name"].value + "</td>";
+      output += "<td>" + avail.attributes["location"].value + "</td>";
+      output += "<td>" + avail.attributes["size"].value + " kvm</td>";
+      output += "<td>" + avail.attributes["cost"].value + "</td>";
+      output += "<td>" + avail.attributes["category"].value + "</td>";
+      output += "<td>" + avail.attributes["date"].value + "</td>";
+      output += "<td>" + avail.attributes["dateto"].value + "</td>";
+      output += "<td>" + avail.attributes["bookingcount"].value + "</td>";
+      output += "<td>" + avail.attributes["remaining"].value + "</td>";
+      output += "</tr>";
     }
   }
 
-  var div = document.querySelector(".OutputDivSearchR");
+  output += "</table>";
+  var div = document.getElementById("OutputDivSearchA");
   div.innerHTML = output;
 }
