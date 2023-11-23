@@ -7,7 +7,6 @@ function updateHistory(token) {
 function showpage(pageid) {
   var pos = $("#" + pageid).position().top;
   $("body").animate({ scrollTop: pos }, 500, "easeOutQuint");
-
   updateHistory(pageid);
 }
 
@@ -52,11 +51,6 @@ function validateEmail() {
     email.style.color = "#f57";
     document.getElementById("emailError").textContent =
       "You need to have a @ in the emailaddress";
-  } else {
-    email.style.backgroundColor = "#fff";
-    email.style.borderColor = "#aaa";
-    email.style.color = "#000";
-    document.getElementById("emailError").textContent = "";
   }
 }
 
@@ -326,16 +320,11 @@ function searchAvailability() {
 }
 
 function showAvailability(returnedData) {
-  // Fix characters in XML notation to HTML notation
   fixChars(returnedData);
-  // An XML DOM document is returned from AJAX
   var resultset = returnedData.childNodes[0];
   var output = "<table>";
-  // Iterate over all nodes in root node (i.e. resources)
   for (i = 0; i < resultset.childNodes.length; i++) {
-    // Iterate over all child nodes of that node that are resource nodes
     if (resultset.childNodes.item(i).nodeName == "availability") {
-      // Retrieve data from resource nodes
       var avail = resultset.childNodes.item(i);
       output +=
         "<tr class='actiontablerow' onclick='alert(\"" +
@@ -366,13 +355,13 @@ function showAvailability(returnedData) {
         avail.attributes["location"].value +
         "</td>";
       output +=
-        "<td class='size" +
+        "<td class='size" + i + "'>" + avail.attributes["size"].value + "</td>";
+      output +=
+        "<td class='cost" +
         i +
         "'>" +
-        avail.attributes["size"].value +
-        " kvm</td>";
-      output +=
-        "<td class='cost" + i + "'>" + avail.attributes["cost"].value + "</td>";
+        avail.attributes["cost"].value +
+        "kvm</td>";
       output +=
         "<td class='cat" +
         i +
@@ -388,9 +377,9 @@ function showAvailability(returnedData) {
         avail.attributes["dateto"].value +
         "</td>";
       output +=
-        "<td> class='count" +
+        "<td class='count" +
         i +
-        "'" +
+        "'>" +
         avail.attributes["bookingcount"].value +
         "</td>";
       output +=
