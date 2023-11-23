@@ -107,6 +107,13 @@ function newName() {
   closedialog();
 }
 
+if (localStorage.getItem("username")) {
+  welcomeMessage.textContent = "Welcome " + localStorage.getItem("username");
+  document.querySelector(".login").textContent =
+    "Hello " + localStorage.getItem("username");
+  document.querySelector(".register").style.display = "none";
+}
+
 let isDarkMode = true;
 function darkMode() {
   isDarkMode
@@ -223,15 +230,6 @@ function getCustomer() {
     });
 }
 
-function ResultCustomern(returnedData) {
-  // Iterate over all nodes in root node (i.e. the 'created' element in root which has an attribute called status)
-  for (i = 0; i < returnedData.childNodes.length; i++) {
-    if (returnedData.childNodes.item(i).nodeName == "created") {
-      alert(returnedData.childNodes.item(i).attributes["status"].value);
-    }
-  }
-}
-
 function searchResources() {
   var input = {
     type: apptype,
@@ -259,16 +257,11 @@ function searchResources() {
 }
 
 function showResources(returnedData) {
-  // Fix characters in XML notation to HTML notation
   fixChars(returnedData);
-  // An XML DOM document is returned from AJAX
   var resultset = returnedData.childNodes[0];
   var output = "<div id='accordion'>";
-  // Iterate over all nodes in root node (i.e. resources)
   for (i = 0; i < resultset.childNodes.length; i++) {
-    // Iterate over all child nodes of that node that are resource nodes
     if (resultset.childNodes.item(i).nodeName == "resource") {
-      // Retrieve data from resource nodes
       var resource = resultset.childNodes.item(i);
       output +=
         "<div style='width:33%;'><h3>Room " +
@@ -297,7 +290,7 @@ function showResources(returnedData) {
 function searchAvailability() {
   var input = {
     resid: `a22albjo${document.getElementById("resIDA").value}`,
-    type: apptype, // Only show bookings for your webbapplication using the apptype
+    type: apptype,
   };
 
   fetch("./booking/getavailability_search_XML.php", {
