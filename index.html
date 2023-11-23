@@ -13,6 +13,15 @@
     />
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <script
+      src="https://unpkg.com/react@16/umd/react.development.js"
+      crossorigin
+    ></script>
+    <script
+      src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"
+      crossorigin
+    ></script>
     <script src="script.js" defer></script>
     <script>
       $(function () {
@@ -89,42 +98,64 @@
 
     <div id="history" class="page">
       <h1>History</h1>
-      <p>
-        Det skall finnas en screen för bokningshistorik som listar kundens
-        genomförda bokningar. Att skriva html som visar en mockup på hur
-        bokningsdata för en användare skall representeras/visualiseras är
-        lämpligt här.
-      </p>
-      <table style="width: 100%; text-align: center; margin: 20px">
-        <thead>
-          <tr>
-            <th>Boknings id</th>
-            <th>Rum</th>
-            <th>Från</th>
-            <th>Till</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>5433</td>
-            <td>4</td>
-            <td>30/11 -23 kl 14:00</td>
-            <td>30/11 -23 kl 15:00</td>
-          </tr>
-          <tr>
-            <td>5434</td>
-            <td>2</td>
-            <td>12/12 -23 kl 11:00</td>
-            <td>12/12 -23 kl 12:00</td>
-          </tr>
-          <tr>
-            <td>5443</td>
-            <td>4</td>
-            <td>20/12 -23 kl 13:00</td>
-            <td>20/12 -23 kl 15:00</td>
-          </tr>
-        </tbody>
-      </table>
+      <script type="text/babel">
+        class Bookings extends React.Component {
+          constructor(props) {
+            super(props);
+            this.state = {
+              data: [],
+            };
+            this.handleClick = this.handleClick.bind(this);
+          }
+          async handleClick() {
+            if (localStorage.getItem("username") == null) {
+              alert(
+                "You need to login or register a user to see your bookings"
+              );
+              return;
+            }
+            let bodyValues = {
+              customerID: `a22albjo${localStorage.getItem("username")}`,
+              type: apptype,
+            };
+
+            const response = await fetch(
+              "./booking/getcustomerbookings_JSON.php",
+              {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(bodyValues),
+              }
+            )
+              .then((response) => response.json())
+              .then((data) => {
+                console.log(data);
+                this.setState({ data: data });
+              });
+          }
+          render() {
+            return (
+              <div>
+                <button onClick={this.handleClick}>Click to Fetch</button>
+                <ul>
+                  {this.state.data.map((item) => (
+                    <li key={item.bookingID}>
+                      {item.category} {item.customerID} {item.resourceID}{" "}
+                      {item.date} {item.location}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            );
+          }
+        }
+
+        ReactDOM.render(<Bookings />, document.getElementById("content"));
+      </script>
+      <div
+        id="content"
+        style="width: 100%; text-align: center; margin: 20px"
+      ></div>
     </div>
 
     <div id="search" class="page">

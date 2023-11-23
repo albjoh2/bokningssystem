@@ -40,8 +40,8 @@ function validate() {
     validated = false;
   }
   if (validated === true) {
-    newName();
     storeCustomer();
+    newName();
   }
 }
 
@@ -97,10 +97,13 @@ function newName() {
   } else if (document.getElementById("user").value) {
     username = document.getElementById("user");
   }
-  localStorage.setItem(username, username.value);
+  localStorage.setItem("username", username.value);
+
+  getCustomer();
+
   let welcomeMessage = document.getElementById("welcomeMessage");
-  if (localStorage.getItem(username)) {
-    welcomeMessage.textContent = "Welcome " + localStorage.getItem(username);
+  if (localStorage.getItem("username")) {
+    welcomeMessage.textContent = "Welcome " + localStorage.getItem("username");
     document.querySelector(".login").textContent = "Hello " + username.value;
     document.querySelector(".register").style.display = "none";
   }
@@ -108,14 +111,6 @@ function newName() {
   showpage("welcome");
 
   closedialog();
-}
-
-let welcomeMessage = document.getElementById("welcomeMessage");
-if (localStorage.getItem(username)) {
-  welcomeMessage.textContent = "Welcome " + localStorage.getItem(username);
-  document.querySelector(".login").textContent =
-    "Hello " + localStorage.getItem(username);
-  document.querySelector(".register").style.display = "none";
 }
 
 let isDarkMode = true;
@@ -143,12 +138,12 @@ function showDialog(dialogid) {
   document.getElementById(dialogid).style.display = "block";
   document.getElementById("underlay").style.display = "block";
 
-  if (localStorage.getItem(username)) {
+  if (localStorage.getItem("username")) {
     let welcomeMessage = document.getElementById("welcomeMessage");
     welcomeMessage.textContent = "Welcome";
     document.querySelector(".login").textContent = "Login";
     document.querySelector(".register").style.display = "block";
-    localStorage.removeItem(username);
+    localStorage.removeItem("username");
     closedialog();
   }
 }
@@ -166,8 +161,6 @@ $(function () {
 let apptype = "a22albjo";
 
 function fixChars(returnedData) {
-  var resultset = returnedData.childNodes[0];
-
   // Iterate over all nodes in root node recursively and replace the strings inside attributes
   x = returnedData.getElementsByTagName("*");
   for (i = 0; i < x.length; i++) {
@@ -182,21 +175,19 @@ function fixChars(returnedData) {
 
 function storeCustomer() {
   var input = {
-    ID: `a22albjo${Math.random()}`,
+    ID: `a22albjo${document.getElementById("user").value}`,
     firstname: document.getElementById("customerfnameC").value,
     lastname: document.getElementById("customerlnameC").value,
     email: document.getElementById("email").value,
     address: document.getElementById("customeraddressC").value,
   };
-  console.log(input);
 
   fetch("./booking/makecustomer_XML.php", {
-    method: "POST", // or 'PUT'
+    method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(input),
   })
     .then(function (response) {
-      // first then()
       if (response.ok) return response.text();
       throw new Error(response.statusText);
     })
@@ -204,6 +195,33 @@ function storeCustomer() {
       ResultBookingCustomer(
         new window.DOMParser().parseFromString(text, "text/xml")
       );
+    })
+    .catch(function (error) {
+      alert("Request failed\n" + error);
+    });
+}
+
+function getCustomer() {
+  var customerID = "a22albjo" + localStorage.getItem("username");
+
+  var input = {
+    customerID: encodeURIComponent(customerID),
+  };
+
+  fetch("./booking/getcustomer_XML.php", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(input),
+  })
+    .then(function (response) {
+      if (response.ok) return response.text();
+      throw new Error(response.statusText);
+    })
+    .then(function (text) {
+      let customer = new window.DOMParser().parseFromString(text, "text/xml");
+      if (!customer.getElementsByTagName("customer")[0]) {
+        showDialog("login");
+      }
     })
     .catch(function (error) {
       // catch
@@ -220,15 +238,6 @@ function ResultCustomern(returnedData) {
   }
 }
 
-//------------------------------------------------------------------------
-// search resources
-//------------------------------------------------------------------------
-// Searches through the resources for a certain application.
-// If only type is given all resources for application are given
-// If either company, location or name are given in any combination, these values are searched
-// If fulltext is given all attributes are searched at once
-//------------------------------------------------------------------------
-
 function searchResources() {
   var input = {
     type: apptype,
@@ -239,12 +248,11 @@ function searchResources() {
   };
 
   fetch("./booking/getresources_XML.php", {
-    method: "POST", // or 'PUT'
+    method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(input),
   })
     .then(function (response) {
-      // first then()
       if (response.ok) return response.text();
       throw new Error(response.statusText);
     })
@@ -252,13 +260,11 @@ function searchResources() {
       showResources(new window.DOMParser().parseFromString(text, "text/xml"));
     })
     .catch(function (error) {
-      // catch
       alert("Request failed\n" + error);
     });
 }
 
 function showResources(returnedData) {
-  console.log(returnedData);
   // Fix characters in XML notation to HTML notation
   fixChars(returnedData);
   // An XML DOM document is returned from AJAX
@@ -301,12 +307,11 @@ function searchAvailability() {
   };
 
   fetch("./booking/getavailability_search_XML.php", {
-    method: "POST", // or 'PUT'
+    method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(input),
   })
     .then(function (response) {
-      // first then()
       if (response.ok) return response.text();
       throw new Error(response.statusText);
     })
@@ -316,7 +321,6 @@ function searchAvailability() {
       );
     })
     .catch(function (error) {
-      // catch
       alert("Request failed\n" + error);
     });
 }
@@ -338,17 +342,63 @@ function showAvailability(returnedData) {
         avail.attributes["resourceID"].value +
         "\")'>";
       output +=
-        "<td>" + avail.attributes["resourceID"].value.slice(8) + "</td>";
-      output += "<td>" + avail.attributes["company"].value + "</td>";
-      output += "<td>" + avail.attributes["name"].value + "</td>";
-      output += "<td>" + avail.attributes["location"].value + "</td>";
-      output += "<td>" + avail.attributes["size"].value + " kvm</td>";
-      output += "<td>" + avail.attributes["cost"].value + "</td>";
-      output += "<td>" + avail.attributes["category"].value + "</td>";
-      output += "<td>" + avail.attributes["date"].value + "</td>";
-      output += "<td>" + avail.attributes["dateto"].value + "</td>";
-      output += "<td>" + avail.attributes["bookingcount"].value + "</td>";
-      output += "<td>" + avail.attributes["remaining"].value + "</td>";
+        "<td class='res" +
+        i +
+        "'>" +
+        avail.attributes["resourceID"].value.slice(8) +
+        "</td>";
+      output +=
+        "<td class='comp" +
+        i +
+        "'>" +
+        avail.attributes["company"].value +
+        "</td>";
+      output +=
+        "<td class='name" +
+        i +
+        "' >" +
+        avail.attributes["name"].value +
+        "</td>";
+      output +=
+        "<td class='loc" +
+        i +
+        "'>" +
+        avail.attributes["location"].value +
+        "</td>";
+      output +=
+        "<td class='size" +
+        i +
+        "'>" +
+        avail.attributes["size"].value +
+        " kvm</td>";
+      output +=
+        "<td class='cost" + i + "'>" + avail.attributes["cost"].value + "</td>";
+      output +=
+        "<td class='cat" +
+        i +
+        "'>" +
+        avail.attributes["category"].value +
+        "</td>";
+      output +=
+        "<td class='date" + i + "'>" + avail.attributes["date"].value + "</td>";
+      output +=
+        "<td class='dateto" +
+        i +
+        "'>" +
+        avail.attributes["dateto"].value +
+        "</td>";
+      output +=
+        "<td> class='count" +
+        i +
+        "'" +
+        avail.attributes["bookingcount"].value +
+        "</td>";
+      output +=
+        "<td class='remain" +
+        i +
+        "'>" +
+        avail.attributes["remaining"].value +
+        "</td>";
       output += "</tr>";
     }
   }
@@ -356,4 +406,39 @@ function showAvailability(returnedData) {
   output += "</table>";
   var div = document.getElementById("OutputDivSearchA");
   div.innerHTML = output;
+}
+
+function makeBooking() {
+  var input = {
+    resourceID: document.getElementById("resourceIDB").value,
+    date: document.getElementById("dateB").value,
+    dateto: document.getElementById("dateToB").value,
+    customerID: document.getElementById("customerIDB").value,
+    rebate: document.getElementById("rebateB").value,
+    status: document.getElementById("statusB").value, // 2 = "Real" booking.
+    position: document.getElementById("positionB").value,
+    auxdata: document.getElementById("auxDataB").value,
+    type: apptype, // Only show bookings for your webbapplication using the apptype
+  };
+
+  fetch("../booking/makebooking_XML.php", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(input),
+  })
+    .then(function (response) {
+      if (response.ok) return response.text();
+      throw new Error(response.statusText);
+    })
+    .then(function (text) {
+      bookingmade(new window.DOMParser().parseFromString(text, "text/xml"));
+    })
+    .catch(function (error) {
+      alert("Request failed\n" + error);
+    });
+}
+
+function bookingmade(returnedData) {
+  alert("booked!");
+  console.log(returnedData);
 }
