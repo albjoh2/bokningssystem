@@ -56,6 +56,11 @@ function validateEmail() {
 
 function validateRoom() {
   let room = document.getElementById("room");
+
+  if (!room) {
+    return;
+  }
+
   if (room.value > 50 || room.value < 1) {
     room.style.borderColor = "#f57";
     room.style.color = "#f57";
@@ -206,7 +211,7 @@ function getCustomer() {
   var customerID = "a22albjo" + localStorage.getItem("username");
 
   var input = {
-    customerID: encodeURIComponent(customerID),
+    customerID: customerID,
   };
 
   fetch("./booking/getcustomer_XML.php", {
@@ -315,73 +320,84 @@ function searchAvailability() {
 function showAvailability(returnedData) {
   fixChars(returnedData);
   var resultset = returnedData.childNodes[0];
-  var output = "<table>";
+  var output = "<table style='border:1px #000 solid; width:100%;'>";
   for (i = 0; i < resultset.childNodes.length; i++) {
     if (resultset.childNodes.item(i).nodeName == "availability") {
       var avail = resultset.childNodes.item(i);
-      output +=
-        "<tr class='actiontablerow' onclick='alert(\"" +
-        avail.attributes["resourceID"].value +
-        "\")'>";
-      output +=
-        "<td class='res" +
-        i +
-        "'>" +
-        avail.attributes["resourceID"].value.slice(8) +
-        "</td>";
-      output +=
-        "<td class='comp" +
-        i +
-        "'>" +
-        avail.attributes["company"].value +
-        "</td>";
-      output +=
-        "<td class='name" +
-        i +
-        "' >" +
-        avail.attributes["name"].value +
-        "</td>";
-      output +=
-        "<td class='loc" +
-        i +
-        "'>" +
-        avail.attributes["location"].value +
-        "</td>";
-      output +=
-        "<td class='size" + i + "'>" + avail.attributes["size"].value + "</td>";
-      output +=
-        "<td class='cost" +
-        i +
-        "'>" +
-        avail.attributes["cost"].value +
-        "kvm</td>";
-      output +=
-        "<td class='cat" +
-        i +
-        "'>" +
-        avail.attributes["category"].value +
-        "</td>";
-      output +=
-        "<td class='date" + i + "'>" + avail.attributes["date"].value + "</td>";
-      output +=
-        "<td class='dateto" +
-        i +
-        "'>" +
-        avail.attributes["dateto"].value +
-        "</td>";
-      output +=
-        "<td class='count" +
-        i +
-        "'>" +
-        avail.attributes["bookingcount"].value +
-        "</td>";
-      output +=
-        "<td class='remain" +
-        i +
-        "'>" +
-        avail.attributes["remaining"].value +
-        "</td>";
-      output += "</tr>";
+      if (avail.attributes["remaining"].value > 0) {
+        output += "<tr class='actiontablerow'>";
+        output +=
+          "<td class='res" +
+          i +
+          "'>" +
+          avail.attributes["resourceID"].value.slice(8) +
+          "</td>";
+        output +=
+          "<td class='comp" +
+          i +
+          "'>" +
+          avail.attributes["company"].value +
+          "</td>";
+        output +=
+          "<td class='name" +
+          i +
+          "' >" +
+          avail.attributes["name"].value +
+          "</td>";
+        output +=
+          "<td class='loc" +
+          i +
+          "'>" +
+          avail.attributes["location"].value +
+          "</td>";
+        output +=
+          "<td class='size" +
+          i +
+          "'>" +
+          avail.attributes["size"].value +
+          "</td>";
+        output +=
+          "<td class='cost" +
+          i +
+          "'>" +
+          avail.attributes["cost"].value +
+          "kvm</td>";
+        output +=
+          "<td class='cat" +
+          i +
+          "'>" +
+          avail.attributes["category"].value +
+          "</td>";
+        output +=
+          "<td class='date" +
+          i +
+          "'>" +
+          avail.attributes["date"].value +
+          "</td>";
+        output +=
+          "<td class='dateto" +
+          i +
+          "'>" +
+          avail.attributes["dateto"].value +
+          "</td>";
+        output +=
+          "<td class='count" +
+          i +
+          "'>" +
+          avail.attributes["bookingcount"].value +
+          "</td>";
+        output +=
+          "<td class='remain" +
+          i +
+          "'>" +
+          avail.attributes["remaining"].value +
+          "</td>";
+        output +=
+          "<td class='Book" +
+          i +
+          `'><button onclick="makeBooking(${i})">Book</button></td>`;
+        output += "</tr>";
+      }
     }
   }
 
@@ -390,18 +406,20 @@ function showAvailability(returnedData) {
   div.innerHTML = output;
 }
 
-function makeBooking() {
+function makeBooking(resourceNo) {
+  console.log(resourceNo);
   var input = {
-    resourceID: document.getElementById("resourceIDB").value,
-    date: document.getElementById("dateB").value,
-    dateto: document.getElementById("dateToB").value,
-    customerID: document.getElementById("customerIDB").value,
-    rebate: document.getElementById("rebateB").value,
-    status: document.getElementById("statusB").value, // 2 = "Real" booking.
-    position: document.getElementById("positionB").value,
-    auxdata: document.getElementById("auxDataB").value,
+    resourceID: document.querySelector(".res" + resourceNo).value,
+    date: document.querySelector(".date" + resourceNo).value,
+    dateto: document.querySelector(".dateto" + resourceNo).value,
+    customerID: "a22albjo" + localStorage.getItem("username"),
+    rebate: 0,
+    status: 2, // 2 = "Real" booking.
+    position: 1,
+    auxdata: "",
     type: apptype, // Only show bookings for your webbapplication using the apptype
   };
+  console.log(input);
 
   fetch("../booking/makebooking_XML.php", {
     method: "POST",

@@ -170,3 +170,32 @@ h3 {
   color: #df6516;
   margin: auto 0;
 }
+
+.booking {
+}
+
+.historyTable {
+  width: 100%;
+  text-align: center;
+}
+
+.refreshButton {
+  height: 50px;
+  width: 50px;
+  border-radius: 100%;
+  font-size: 40px;
+  cursor: pointer;
+  color: #df6516;
+  border: none;
+  background: none;
+}
+
+.refreshButton:hover {
+  transform: rotate(360deg);
+  transition: transform 1s;
+}
+
+.refreshButton:active {
+  transform: rotate(360deg);
+  transition: transform 1s;
+}

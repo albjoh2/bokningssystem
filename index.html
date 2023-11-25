@@ -99,6 +99,17 @@
     <div id="history" class="page">
       <h1>History</h1>
       <script type="text/babel">
+        function Booking(props) {
+          return (
+            <tr className="booking">
+              <td>{props.data.resourceID.slice(8)}</td>
+              <td>{props.data.date}</td>
+              <td>{props.data.category}</td>
+              <td>{props.data.location}</td>
+            </tr>
+          );
+        }
+
         class Bookings extends React.Component {
           constructor(props) {
             super(props);
@@ -107,7 +118,15 @@
             };
             this.handleClick = this.handleClick.bind(this);
           }
+
+          async componentDidMount() {
+            await this.fetchData();
+          }
+
           async handleClick() {
+            await this.fetchData();
+          }
+          async fetchData() {
             if (localStorage.getItem("username") == null) {
               alert(
                 "You need to login or register a user to see your bookings"
@@ -133,18 +152,33 @@
                 this.setState({ data: data });
               });
           }
+
           render() {
             return (
               <div>
-                <button onClick={this.handleClick}>Click to Fetch</button>
-                <ul>
-                  {this.state.data.map((item) => (
-                    <li key={item.bookingID}>
-                      {item.category} {item.customerID} {item.resourceID}{" "}
-                      {item.date} {item.location}
-                    </li>
-                  ))}
-                </ul>
+                <table className="historyTable">
+                  <thead>
+                    <tr>
+                      <th>Room</th>
+                      <th>Time</th>
+                      <th>Resources</th>
+                      <th>Location</th>
+                      <th>
+                        <button
+                          className="refreshButton"
+                          onClick={this.handleClick}
+                        >
+                          ⤾
+                        </button>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {this.state.data.map((item) => (
+                      <Booking key={item.key} data={item} />
+                    ))}
+                  </tbody>
+                </table>
               </div>
             );
           }
