@@ -199,3 +199,10 @@ h3 {
   transform: rotate(360deg);
   transition: transform 1s;
 }
+
+.bookButton {
+  border: none;
+  background: none;
+  color: #4444ff;
+  font-size: 15px;
+}

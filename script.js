@@ -5,9 +5,33 @@ function updateHistory(token) {
 }
 
 function showpage(pageid) {
-  var pos = $("#" + pageid).position().top;
+  let pos = $("#" + pageid).position().top;
   $("body").animate({ scrollTop: pos }, 500, "easeOutQuint");
   updateHistory(pageid);
+}
+
+function showDialog(dialogid) {
+  let dialogs = document.getElementsByClassName("dialog");
+  for (let dialog of dialogs) {
+    dialog.style.display = "none";
+  }
+  document.getElementById(dialogid).style.display = "block";
+  document.getElementById("underlay").style.display = "block";
+
+  if (localStorage.getItem("username")) {
+    let welcomeMessage = document.getElementById("welcomeMessage");
+    welcomeMessage.textContent = "Welcome";
+    document.querySelector(".login").textContent = "Login";
+    document.querySelector(".register").style.display = "block";
+    localStorage.removeItem("username");
+    closedialog();
+  }
+}
+
+function closedialog() {
+  document.getElementById("underlay").style.display = "none";
+  document.getElementById("login").style.display = "none";
+  document.getElementById("register").style.display = "none";
 }
 
 function validate() {
@@ -40,17 +64,21 @@ function validate() {
   }
   if (validated === true) {
     storeCustomer();
-    newName();
   }
 }
 
 function validateEmail() {
   let email = document.getElementById("email");
-  if (email.value.indexOf("@") === -1) {
+  let emailRegex = /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z0-9]+$/;
+  if (!emailRegex.test(email.value)) {
     email.style.borderColor = "#f57";
     email.style.color = "#f57";
     document.getElementById("emailError").textContent =
       "You need to have a @ in the emailaddress";
+  } else {
+    email.style.borderColor = "";
+    email.style.color = "";
+    document.getElementById("emailError").textContent = "";
   }
 }
 
@@ -136,30 +164,6 @@ function darkMode() {
   isDarkMode = !isDarkMode;
 }
 
-function showDialog(dialogid) {
-  var dialogs = document.getElementsByClassName("dialog");
-  for (dialog of dialogs) {
-    dialog.style.display = "none";
-  }
-  document.getElementById(dialogid).style.display = "block";
-  document.getElementById("underlay").style.display = "block";
-
-  if (localStorage.getItem("username")) {
-    let welcomeMessage = document.getElementById("welcomeMessage");
-    welcomeMessage.textContent = "Welcome";
-    document.querySelector(".login").textContent = "Login";
-    document.querySelector(".register").style.display = "block";
-    localStorage.removeItem("username");
-    closedialog();
-  }
-}
-
-function closedialog() {
-  document.getElementById("underlay").style.display = "none";
-  document.getElementById("login").style.display = "none";
-  document.getElementById("register").style.display = "none";
-}
-
 $(function () {
   $("#accordion").accordion();
 });
@@ -180,7 +184,7 @@ function fixChars(returnedData) {
 }
 
 function storeCustomer() {
-  var input = {
+  let input = {
     ID: `a22albjo${document.getElementById("user").value}`,
     firstname: document.getElementById("customerfnameC").value,
     lastname: document.getElementById("customerlnameC").value,
@@ -194,13 +198,11 @@ function storeCustomer() {
     body: JSON.stringify(input),
   })
     .then(function (response) {
-      if (response.ok) return response.text();
+      if (response.ok) {
+        newName();
+        return response.text();
+      }
       throw new Error(response.statusText);
-    })
-    .then(function (text) {
-      ResultBookingCustomer(
-        new window.DOMParser().parseFromString(text, "text/xml")
-      );
     })
     .catch(function (error) {
       alert("Request failed\n" + error);
@@ -208,9 +210,9 @@ function storeCustomer() {
 }
 
 function getCustomer() {
-  var customerID = "a22albjo" + localStorage.getItem("username");
+  let customerID = "a22albjo" + localStorage.getItem("username");
 
-  var input = {
+  let input = {
     customerID: customerID,
   };
 
@@ -236,7 +238,7 @@ function getCustomer() {
 }
 
 function searchResources() {
-  var input = {
+  let input = {
     type: apptype,
     name: document.getElementById("resNameS").value,
     location: document.getElementById("resLocationS").value,
@@ -263,11 +265,11 @@ function searchResources() {
 
 function showResources(returnedData) {
   fixChars(returnedData);
-  var resultset = returnedData.childNodes[0];
-  var output = "<div id='accordion'>";
+  let resultset = returnedData.childNodes[0];
+  let output = "<div id='accordion'>";
   for (i = 0; i < resultset.childNodes.length; i++) {
     if (resultset.childNodes.item(i).nodeName == "resource") {
-      var resource = resultset.childNodes.item(i);
+      let resource = resultset.childNodes.item(i);
       output +=
         "<div style='width:33%;'><h3>Room " +
         resource.attributes["id"].value.slice(8) +
@@ -288,12 +290,12 @@ function showResources(returnedData) {
   }
   output += "</div>";
 
-  var div = document.getElementById("divOutput");
+  let div = document.getElementById("divOutput");
   div.innerHTML = output;
 }
 
 function searchAvailability() {
-  var input = {
+  let input = {
     resid: `a22albjo${document.getElementById("resIDA").value}`,
     type: apptype,
   };
@@ -319,11 +321,13 @@ function searchAvailability() {
 
 function showAvailability(returnedData) {
   fixChars(returnedData);
-  var resultset = returnedData.childNodes[0];
-  var output = "<table style='border:1px #000 solid; width:100%;'>";
+  let resultset = returnedData.childNodes[0];
+  let output = "<table style='width:100%;'>";
+  output +=
+    "<tr><th>Room</th> <th>Items</th> <th>People</th> <th>Location</th> <th>Size</th> <th>Screen</th> <th>From</th> <th>To</th> </tr>";
   for (i = 0; i < resultset.childNodes.length; i++) {
     if (resultset.childNodes.item(i).nodeName == "availability") {
-      var avail = resultset.childNodes.item(i);
+      let avail = resultset.childNodes.item(i);
       if (avail.attributes["remaining"].value > 0) {
         output += "<tr class='actiontablerow'>";
         output +=
@@ -350,12 +354,7 @@ function showAvailability(returnedData) {
           "'>" +
           avail.attributes["location"].value +
           "</td>";
-        output +=
-          "<td class='size" +
-          i +
-          "'>" +
-          avail.attributes["size"].value +
-          "</td>";
+
         output +=
           "<td class='cost" +
           i +
@@ -381,47 +380,37 @@ function showAvailability(returnedData) {
           avail.attributes["dateto"].value +
           "</td>";
         output +=
-          "<td class='count" +
-          i +
-          "'>" +
-          avail.attributes["bookingcount"].value +
-          "</td>";
-        output +=
-          "<td class='remain" +
-          i +
-          "'>" +
-          avail.attributes["remaining"].value +
-          "</td>";
-        output +=
           "<td class='Book" +
           i +
-          `'><button onclick="makeBooking(${i})">Book</button></td>`;
+          `'><button class="bookButton" onclick="makeBooking(${i})">Book</button></td>`;
         output += "</tr>";
       }
     }
   }
 
   output += "</table>";
-  var div = document.getElementById("OutputDivSearchA");
+  let div = document.getElementById("OutputDivSearchA");
   div.innerHTML = output;
 }
 
 function makeBooking(resourceNo) {
-  console.log(resourceNo);
-  var input = {
-    resourceID: document.querySelector(".res" + resourceNo).value,
-    date: document.querySelector(".date" + resourceNo).value,
-    dateto: document.querySelector(".dateto" + resourceNo).value,
+  let input = {
+    resourceID:
+      "a22albjo" + document.querySelector(".res" + resourceNo).textContent,
+    date: document.querySelector(".date" + resourceNo).textContent,
+    dateto: document.querySelector(".dateto" + resourceNo).textContent,
     customerID: "a22albjo" + localStorage.getItem("username"),
-    rebate: 0,
+    rebate: 1,
     status: 2, // 2 = "Real" booking.
     position: 1,
     auxdata: "",
     type: apptype, // Only show bookings for your webbapplication using the apptype
   };
-  console.log(input);
 
-  fetch("../booking/makebooking_XML.php", {
+  document.getElementById("resIDA").value = "";
+  document.getElementById("searchAva").click();
+
+  fetch("./booking/makebooking_XML.php", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(input),
@@ -430,15 +419,7 @@ function makeBooking(resourceNo) {
       if (response.ok) return response.text();
       throw new Error(response.statusText);
     })
-    .then(function (text) {
-      bookingmade(new window.DOMParser().parseFromString(text, "text/xml"));
-    })
     .catch(function (error) {
       alert("Request failed\n" + error);
     });
-}
-
-function bookingmade(returnedData) {
-  alert("booked!");
-  console.log(returnedData);
 }
