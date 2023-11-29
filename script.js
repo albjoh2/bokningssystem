@@ -425,6 +425,9 @@ function makeBooking(resourceNo) {
       if (response.ok) return response.text();
       throw new Error(response.statusText);
     })
+    .then(function (text) {
+      alert("Booking done!");
+    })
     .catch(function (error) {
       alert("Request failed\n" + error);
     });

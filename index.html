@@ -102,101 +102,102 @@
       <div id="OutputDivSearchA"></div>
     </div>
 
-    <div id="history" class="page">
-      <h1>History</h1>
-      <script type="text/babel">
-        function Booking(props) {
-          return (
-            <tr className="booking">
-              <td>{props.data.resourceID.slice(8)}</td>
-              <td>{props.data.date}</td>
-              <td>{props.data.category}</td>
-              <td>{props.data.location}</td>
-            </tr>
-          );
+    <script type="text/babel">
+      function Booking(props) {
+        return (
+          <tr className="booking">
+            <td>{props.data.resourceID.slice(8)}</td>
+            <td>{props.data.date}</td>
+            <td>{props.data.category}</td>
+            <td>{props.data.location}</td>
+          </tr>
+        );
+      }
+
+      class Bookings extends React.Component {
+        constructor(props) {
+          super(props);
+          this.state = {
+            data: [],
+          };
+          this.handleClick = this.handleClick.bind(this);
         }
 
-        class Bookings extends React.Component {
-          constructor(props) {
-            super(props);
-            this.state = {
-              data: [],
-            };
-            this.handleClick = this.handleClick.bind(this);
-          }
+        async componentDidMount() {
+          await this.fetchData();
+        }
 
-          async componentDidMount() {
-            await this.fetchData();
-          }
-
-          async handleClick() {
-            await this.fetchData();
-          }
-          async fetchData() {
-            if (localStorage.getItem("username") == null) {
-              alert(
-                "You need to login or register a user to see your bookings"
-              );
-              return;
-            }
-            let bodyValues = {
-              customerID: `a22albjo${localStorage.getItem("username")}`,
-              type: apptype,
-            };
-
-            const response = await fetch(
-              "./booking/getcustomerbookings_JSON.php",
-              {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(bodyValues),
-              }
-            )
-              .then((response) => response.json())
-              .then((data) => {
-                console.log(data);
-                this.setState({ data: data });
-              });
-          }
-
-          render() {
+        async handleClick() {
+          await this.fetchData();
+        }
+        async fetchData() {
+          if (localStorage.getItem("username") == null) {
             return (
-              <div>
-                <table className="historyTable">
-                  <thead>
-                    <tr>
-                      <th>Room</th>
-                      <th>Time</th>
-                      <th>Resources</th>
-                      <th>Location</th>
-                      <th>
-                        <button
-                          className="refreshButton"
-                          onClick={this.handleClick}
-                        >
-                          ⤾
-                        </button>
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {this.state.data.map((item) => (
-                      <Booking key={item.key} data={item} />
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+              <p>You need to login or register a user to see your bookings</p>
             );
           }
+          let bodyValues = {
+            customerID: `a22albjo${localStorage.getItem("username")}`,
+            type: apptype,
+          };
+
+          const response = await fetch(
+            "./booking/getcustomerbookings_JSON.php",
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(bodyValues),
+            }
+          )
+            .then((response) => response.json())
+            .then((data) => {
+              this.setState({ data: data });
+            });
         }
 
-        ReactDOM.render(<Bookings />, document.getElementById("content"));
-      </script>
-      <div
-        id="content"
-        style="width: 100%; text-align: center; margin: 20px"
-      ></div>
-    </div>
+        render() {
+          return (
+            <div>
+              <table className="historyTable">
+                <thead>
+                  <tr>
+                    <th>Room</th>
+                    <th>Time</th>
+                    <th>Resources</th>
+                    <th>Location</th>
+                    <th>
+                      <button
+                        className="refreshButton"
+                        onClick={this.handleClick}
+                      >
+                        ⤾
+                      </button>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {this.state.data.map((item) => (
+                    <Booking key={item.key} data={item} />
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          );
+        }
+      }
+
+      function History() {
+        return (
+          <div>
+            <h1>History</h1>
+            <Bookings />
+          </div>
+        );
+      }
+
+      ReactDOM.render(<History />, document.getElementById("history"));
+    </script>
+    <div id="history" class="page"></div>
 
     <div id="search" class="page">
       <h1>Search</h1>
@@ -212,29 +213,25 @@
           type="text"
           name="resIDS"
           id="resIDS"
-          onchange="searchResources()"
-          onkeyup="searchResources()"
+          oninput="searchResources()"
         />
         People:<input
           type="text"
           name="resNameS"
           id="resNameS"
-          onchange="searchResources()"
-          onkeyup="searchResources()"
+          oninput="searchResources()"
         />
         Location:<input
           type="text"
           name="resLocationS"
           id="resLocationS"
-          onchange="searchResources()"
-          onkeyup="searchResources()"
+          oninput="searchResources()"
         />
         Items:<input
           type="text"
           name="resCompanyS"
           id="resCompanyS"
-          onchange="searchResources()"
-          onkeyup="searchResources()"
+          oninput="searchResources()"
         />
 
         <input
