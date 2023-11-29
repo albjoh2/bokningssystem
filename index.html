@@ -80,24 +80,25 @@
 
     <div id="booking" class="page">
       <h1>Booking</h1>
-
-      <label for="room"
-        >Room
+      <search style="display: flex">
+        <label for="room" style="width: 100%"
+          >Room
+          <input
+            oninput="validateRoom()"
+            type="number"
+            name="resIDA"
+            id="resIDA"
+          />
+          <p id="roomError" class="error"></p>
+        </label>
         <input
-          oninput="validateRoom()"
-          type="number"
-          name="resIDA"
-          id="resIDA"
+          style="height: 30px; align-self: flex-end; margin: 10px"
+          id="searchAva"
+          value="Search"
+          type="button"
+          onclick="searchAvailability()"
         />
-        <p id="roomError" class="error"></p>
-      </label>
-      <input
-        id="searchAva"
-        value="Search"
-        type="button"
-        onclick="searchAvailability()"
-      />
-
+      </search>
       <div id="OutputDivSearchA"></div>
     </div>
 
@@ -331,7 +332,7 @@
         <input
           type="submit"
           value="Logga in"
-          onclick="newName()"
+          onclick="login()"
           style="margin: 5px; cursor: pointer"
         />
       </div>

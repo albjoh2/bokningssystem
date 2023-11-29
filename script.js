@@ -41,8 +41,10 @@ function validate() {
   let checkbox = document.getElementById("checkbox");
   let email = document.getElementById("email");
   if (pass1.value !== pass2.value) {
-    pass1.style.backgroundColor = "#f8a";
-    pass2.style.backgroundColor = "#f8a";
+    pass1.style.color = "#f8a";
+    pass2.style.borderColor = "#f8a";
+    pass1.style.color = "#f8a";
+    pass2.style.borderColor = "#f8a";
     document.getElementById("passwordError").textContent =
       "Passwords are not matching";
     validated = false;
@@ -82,6 +84,25 @@ function validateEmail() {
   }
 }
 
+function liveValidation() {
+  let pass1 = document.getElementById("pass");
+  let pass2 = document.getElementById("passAgain");
+  if (pass1.value !== pass2.value) {
+    pass1.style.borderColor = "#f57";
+    pass2.style.borderColor = "#f57";
+    pass1.style.color = "#f57";
+    pass2.style.color = "#f57";
+    document.getElementById("passwordError").textContent =
+      "Passwords are not matching";
+  } else {
+    pass1.style.borderColor = "#fff";
+    pass2.style.borderColor = "#fff";
+    pass1.style.color = "#fff";
+    pass2.style.color = "#fff";
+    document.getElementById("passwordError").textContent = "";
+  }
+}
+
 function validateRoom() {
   let room = document.getElementById("room");
 
@@ -102,41 +123,17 @@ function validateRoom() {
   }
 }
 
-function liveValidation() {
-  let pass1 = document.getElementById("pass");
-  let pass2 = document.getElementById("passAgain");
-  if (pass1.value !== pass2.value) {
-    pass1.style.backgroundColor = "#f8a";
-    pass2.style.backgroundColor = "#f8a";
-    document.getElementById("passwordError").textContent =
-      "Passwords are not matching";
-  } else {
-    pass1.style.backgroundColor = "#fff";
-    pass2.style.backgroundColor = "#fff";
-    document.getElementById("passwordError").textContent = "";
-  }
-}
-
-function newName() {
+function login() {
   let username;
   if (document.getElementById("username").value) {
-    username = document.getElementById("username");
+    username = document.getElementById("username").value;
   } else if (document.getElementById("user").value) {
-    username = document.getElementById("user");
+    username = document.getElementById("user").value;
   }
-  localStorage.setItem("username", username.value);
 
-  getCustomer();
-
-  let welcomeMessage = document.getElementById("welcomeMessage");
-  if (localStorage.getItem("username")) {
-    welcomeMessage.textContent = "Welcome " + localStorage.getItem("username");
-    document.querySelector(".login").textContent = "Hello " + username.value;
-    document.querySelector(".register").style.display = "none";
-  }
+  getCustomer(username);
 
   showpage("welcome");
-
   closedialog();
 }
 
@@ -199,18 +196,25 @@ function storeCustomer() {
   })
     .then(function (response) {
       if (response.ok) {
-        newName();
+        login();
         return response.text();
       }
       throw new Error(response.statusText);
     })
     .catch(function (error) {
-      alert("Request failed\n" + error);
+      if (error.status == 500) {
+        alert(
+          "Something went wrong. Username might already exists, please try again. \n" +
+            error
+        );
+      } else {
+        alert("Request failed\n" + error);
+      }
     });
 }
 
-function getCustomer() {
-  let customerID = "a22albjo" + localStorage.getItem("username");
+function getCustomer(username) {
+  let customerID = "a22albjo" + username;
 
   let input = {
     customerID: customerID,
@@ -228,7 +232,14 @@ function getCustomer() {
     .then(function (text) {
       let customer = new window.DOMParser().parseFromString(text, "text/xml");
       if (!customer.getElementsByTagName("customer")[0]) {
-        showDialog("login");
+        alert("No customer with that username was found");
+      } else {
+        localStorage.setItem("username", username);
+        let welcomeMessage = document.getElementById("welcomeMessage");
+        welcomeMessage.textContent =
+          "Welcome " + localStorage.getItem("username");
+        document.querySelector(".login").textContent = "Hello " + username;
+        document.querySelector(".register").style.display = "none";
       }
     })
     .catch(function (error) {
@@ -273,19 +284,23 @@ function showResources(returnedData) {
       output +=
         "<div style='width:33%;'><h3>Room " +
         resource.attributes["id"].value.slice(8) +
-        "</h3><div class='accordion' >";
-      output +=
-        "<p><b>Size</b> " + resource.attributes["size"].value + "kvm</p>";
-      output +=
-        "<p><b>Items</b> " + resource.attributes["company"].value + "</p>";
-      output +=
-        "<p><b>People</b> " + resource.attributes["name"].value + "</p>";
-      output +=
-        "<p><b>Location</b> " + resource.attributes["location"].value + "</p>";
-      output +=
-        "<p><b>Screen</b> " + resource.attributes["category"].value + "'</p>";
-
-      output += "</div></div>";
+        "</h3><div class='accordion' >" +
+        "<p><b>Size</b> " +
+        resource.attributes["cost"].value +
+        "kvm</p>" +
+        "<p><b>Items</b> " +
+        resource.attributes["company"].value +
+        "</p>" +
+        "<p><b>People</b> " +
+        resource.attributes["name"].value +
+        "</p>" +
+        "<p><b>Location</b> " +
+        resource.attributes["location"].value +
+        "</p>" +
+        "<p><b>Screen</b> " +
+        resource.attributes["category"].value +
+        "'</p>" +
+        "</div></div>";
     }
   }
   output += "</div>";
@@ -329,61 +344,52 @@ function showAvailability(returnedData) {
     if (resultset.childNodes.item(i).nodeName == "availability") {
       let avail = resultset.childNodes.item(i);
       if (avail.attributes["remaining"].value > 0) {
-        output += "<tr class='actiontablerow'>";
         output +=
+          "<tr class='actiontablerow'>" +
           "<td class='res" +
           i +
           "'>" +
           avail.attributes["resourceID"].value.slice(8) +
-          "</td>";
-        output +=
+          "</td>" +
           "<td class='comp" +
           i +
           "'>" +
           avail.attributes["company"].value +
-          "</td>";
-        output +=
+          "</td>" +
           "<td class='name" +
           i +
           "' >" +
           avail.attributes["name"].value +
-          "</td>";
-        output +=
+          "</td>" +
           "<td class='loc" +
           i +
           "'>" +
           avail.attributes["location"].value +
-          "</td>";
-
-        output +=
+          "</td>" +
           "<td class='cost" +
           i +
           "'>" +
           avail.attributes["cost"].value +
-          "kvm</td>";
-        output +=
+          "kvm</td>" +
           "<td class='cat" +
           i +
           "'>" +
           avail.attributes["category"].value +
-          "</td>";
-        output +=
+          "</td>" +
           "<td class='date" +
           i +
           "'>" +
           avail.attributes["date"].value +
-          "</td>";
-        output +=
+          "</td>" +
           "<td class='dateto" +
           i +
           "'>" +
           avail.attributes["dateto"].value +
-          "</td>";
-        output +=
+          "</td>" +
           "<td class='Book" +
           i +
           `'><button class="bookButton" onclick="makeBooking(${i})">Book</button></td>`;
-        output += "</tr>";
+        +"</tr>";
       }
     }
   }
