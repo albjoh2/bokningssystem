@@ -21,6 +21,7 @@
   </head>
 
   <body>
+    <div class="loading">⤾</div>
     <button onclick="darkMode()" id="modeButton">🌙</button>
     <div id="underlay" onclick="closedialog()"></div>
     <div class="menu">
@@ -92,15 +93,56 @@
     </div>
 
     <script type="text/babel">
-      function Booking(props) {
-        return (
-          <tr className="booking">
-            <td>{props.data.resourceID.slice(8)}</td>
-            <td>{props.data.date}</td>
-            <td>{props.data.category}</td>
-            <td>{props.data.location}</td>
-          </tr>
-        );
+      class Booking extends React.Component {
+        constructor(props) {
+          super(props);
+          this.handleClick = this.handleClick.bind(this);
+        }
+        async handleClick() {
+          await this.deleteBooking();
+        }
+        async deleteBooking(resourceID, date) {
+          let input = {
+            resourceID: this.props.data.resourceID,
+            date: this.props.data.date,
+            // dateto: document.querySelector(".dateto" + resourceNo).textContent,
+            customerID: "a22albjo" + localStorage.getItem("username"),
+            // rebate: 1,
+            // status: 2, // 2 = "Real" booking. // position: 1, // auxdata: "",
+            type: apptype, // Only show bookings for your webbapplication using the apptype
+          };
+
+          const response = await fetch("./booking/deletebooking_XML.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(input),
+          })
+            .then(function (response) {
+              if (response.ok) return response.text();
+              throw new Error(response.statusText);
+            })
+            .then(function (text) {
+              alert("Booking deleted!");
+            })
+            .catch(function (error) {
+              alert("Request failed\n" + error);
+            });
+        }
+        render() {
+          return (
+            <tr className="booking">
+              <td>{this.props.data.resourceID.slice(8)}</td>
+              <td>{this.props.data.date}</td>
+              <td>{this.props.data.category}</td>
+              <td>{this.props.data.location}</td>
+              <td>
+                <button onClick={this.handleClick} className={"deleteBooking"}>
+                  x
+                </button>
+              </td>
+            </tr>
+          );
+        }
       }
 
       class Bookings extends React.Component {

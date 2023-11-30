@@ -6,7 +6,7 @@ function updateHistory(token) {
 
 function showpage(pageid) {
   let pos = $("#" + pageid).position().top;
-  $("body").animate({ scrollTop: pos }, 500, "easeOutQuint");
+  $("body").animate({ scrollTop: pos }, 1000, "easeOutQuint");
   updateHistory(pageid);
 }
 
@@ -15,6 +15,7 @@ function showDialog(dialogid) {
   for (let dialog of dialogs) {
     dialog.style.display = "none";
   }
+  addClosingEvent();
   document.getElementById(dialogid).style.display = "block";
   document.getElementById("underlay").style.display = "block";
 
@@ -57,7 +58,8 @@ function validate() {
   if (checkbox.checked) {
     document.getElementById("checkboxError").textContent = "";
   }
-  if (email.value.indexOf("@") === -1) {
+  let emailRegex = /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z]+$/;
+  if (!emailRegex.test(email.value)) {
     email.style.borderColor = "#f57";
     email.style.color = "#f57";
     document.getElementById("emailError").textContent =
@@ -71,7 +73,7 @@ function validate() {
 
 function validateEmail() {
   let email = document.getElementById("email");
-  let emailRegex = /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z0-9]+$/;
+  let emailRegex = /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z]+$/;
   if (!emailRegex.test(email.value)) {
     email.style.borderColor = "#f57";
     email.style.color = "#f57";
@@ -94,11 +96,18 @@ function liveValidation() {
     pass2.style.color = "#f57";
     document.getElementById("passwordError").textContent =
       "Passwords are not matching";
+  } else if (pass1.value.length < 5) {
+    pass1.style.borderColor = "#f57";
+    pass2.style.borderColor = "#f57";
+    pass1.style.color = "#f57";
+    pass2.style.color = "#f57";
+    document.getElementById("passwordError").textContent =
+      "Password has to be atleast 5 characters";
   } else {
-    pass1.style.borderColor = "#fff";
-    pass2.style.borderColor = "#fff";
-    pass1.style.color = "#fff";
-    pass2.style.color = "#fff";
+    pass1.style.borderColor = "";
+    pass2.style.borderColor = "";
+    pass1.style.color = "";
+    pass2.style.color = "";
     document.getElementById("passwordError").textContent = "";
   }
 }
@@ -121,6 +130,14 @@ function validateRoom() {
     room.style.color = "#000";
     document.getElementById("roomError").textContent = "";
   }
+}
+
+function addClosingEvent() {
+  document.addEventListener("keydown", function (event) {
+    if (event.key === "Escape") {
+      closedialog();
+    }
+  });
 }
 
 function login() {
@@ -396,6 +413,7 @@ function showAvailability(returnedData) {
 }
 
 function makeBooking(resourceNo) {
+  document.querySelector(".loading").style.display = "block";
   let input = {
     resourceID:
       "a22albjo" + document.querySelector(".res" + resourceNo).textContent,
@@ -423,6 +441,7 @@ function makeBooking(resourceNo) {
     })
     .then(function (text) {
       alert("Booking done!");
+      document.querySelector(".loading").style.display = "none";
     })
     .catch(function (error) {
       alert("Request failed\n" + error);

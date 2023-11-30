@@ -128,6 +128,27 @@ h3 {
   padding: 20px;
 }
 
+.loading {
+  position: fixed;
+  top: 30%;
+  left: 45%;
+  display: none;
+  color: #df6516;
+  animation: rotate360 2s linear infinite;
+  transform-origin: center;
+  font-weight: 100;
+  font-size: 450px;
+}
+
+@keyframes rotate360 {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 #accordion {
   display: flex;
   justify-content: space-around;
@@ -205,4 +226,19 @@ h3 {
   background: none;
   color: #4444ff;
   font-size: 15px;
+}
+
+.bookButton:hover {
+  cursor: pointer;
+}
+
+.deleteBooking {
+  border: none;
+  background-color: white;
+  color: #f57;
+  font-size: 20;
+}
+
+.deleteBooking:hover {
+  cursor: pointer;
 }
