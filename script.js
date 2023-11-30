@@ -161,10 +161,6 @@ function darkMode() {
   isDarkMode = !isDarkMode;
 }
 
-$(function () {
-  $("#accordion").accordion();
-});
-
 let apptype = "a22albjo";
 
 function fixChars(returnedData) {
