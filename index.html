@@ -101,15 +101,12 @@
         async handleClick() {
           await this.deleteBooking();
         }
-        async deleteBooking(resourceID, date) {
+        async deleteBooking() {
           let input = {
             resourceID: this.props.data.resourceID,
             date: this.props.data.date,
-            // dateto: document.querySelector(".dateto" + resourceNo).textContent,
             customerID: "a22albjo" + localStorage.getItem("username"),
-            // rebate: 1,
-            // status: 2, // 2 = "Real" booking. // position: 1, // auxdata: "",
-            type: apptype, // Only show bookings for your webbapplication using the apptype
+            type: apptype,
           };
 
           const response = await fetch("./booking/deletebooking_XML.php", {

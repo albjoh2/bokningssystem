@@ -290,14 +290,14 @@ function searchResources() {
 function showResources(returnedData) {
   fixChars(returnedData);
   let resultset = returnedData.childNodes[0];
-  let output = "<div id='accordion'>";
+  let output = "<div id='card'>";
   for (i = 0; i < resultset.childNodes.length; i++) {
     if (resultset.childNodes.item(i).nodeName == "resource") {
       let resource = resultset.childNodes.item(i);
       output +=
         "<div style='width:33%;'><h3>Room " +
         resource.attributes["id"].value.slice(8) +
-        "</h3><div class='accordion' >" +
+        "</h3><div class='card' >" +
         "<p><b>Size</b> " +
         resource.attributes["cost"].value +
         "kvm</p>" +

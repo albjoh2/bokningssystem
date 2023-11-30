@@ -115,7 +115,7 @@ label {
 .register:hover {
   background-color: #df6516;
 }
-.accordion {
+.card {
   background-color: #aaa;
   border-radius: 0px 0px 5px 5px;
   padding: 20px;
@@ -149,7 +149,7 @@ h3 {
   }
 }
 
-#accordion {
+#card {
   display: flex;
   justify-content: space-around;
 }
@@ -174,6 +174,7 @@ h3 {
   background-color: inherit !important;
   color: inherit !important;
 }
+
 #modeButton {
   background-color: #353535;
   border: #df6516 1px solid;
@@ -187,12 +188,10 @@ h3 {
   box-shadow: 1px 1px 3px 1px #35353555;
   cursor: pointer;
 }
+
 .login {
   color: #df6516;
   margin: auto 0;
-}
-
-.booking {
 }
 
 .historyTable {
