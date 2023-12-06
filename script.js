@@ -181,7 +181,6 @@ function darkMode() {
 let apptype = "a22albjo";
 
 function fixChars(returnedData) {
-  // Iterate over all nodes in root node recursively and replace the strings inside attributes
   x = returnedData.getElementsByTagName("*");
   for (i = 0; i < x.length; i++) {
     for (j = 0; j < x[i].attributes.length; j++) {
@@ -413,6 +412,10 @@ function showAvailability(returnedData) {
 }
 
 function makeBooking(resourceNo) {
+  if (!localStorage.getItem("username")) {
+    alert("You need to login to make a booking!");
+    return;
+  }
   document.querySelector(".loading").style.display = "block";
   let input = {
     resourceID:
@@ -421,10 +424,10 @@ function makeBooking(resourceNo) {
     dateto: document.querySelector(".dateto" + resourceNo).textContent,
     customerID: "a22albjo" + localStorage.getItem("username"),
     rebate: 1,
-    status: 2, // 2 = "Real" booking.
+    status: 2,
     position: 1,
     auxdata: "",
-    type: apptype, // Only show bookings for your webbapplication using the apptype
+    type: apptype,
   };
 
   document.getElementById("resIDA").value = "";
@@ -447,3 +450,282 @@ function makeBooking(resourceNo) {
       alert("Request failed\n" + error);
     });
 }
+
+let canvas = document.getElementById("myCanvas");
+let ctx = canvas.getContext("2d");
+canvas.width = 1920;
+canvas.height = 1080;
+ctx.font = "normal 250px Arial";
+
+function Lager_1() {
+  ctx.globalAlpha = 1.0;
+  ctx.fillStyle = "#FFC280";
+  ctx.beginPath();
+  ctx.moveTo(112, -20);
+  ctx.bezierCurveTo(114, -20, 114, -23, 112, -23);
+  ctx.bezierCurveTo(110, -23, 110, -20, 112, -20);
+  ctx.lineTo(112, -20);
+  ctx.lineTo(112, -20);
+  ctx.fill();
+  ctx.fillStyle = "#754C24";
+  ctx.beginPath();
+  ctx.moveTo(177, 60);
+  ctx.lineTo(1098, 60);
+  ctx.lineTo(1098, 420);
+  ctx.lineTo(177, 420);
+  ctx.lineTo(177, 60);
+  ctx.fill();
+  ctx.fillStyle = "#8C6239";
+  ctx.beginPath();
+  ctx.moveTo(21, 130);
+  ctx.lineTo(942, 130);
+  ctx.lineTo(942, 490);
+  ctx.lineTo(21, 490);
+  ctx.lineTo(21, 130);
+  ctx.fill();
+  ctx.fillStyle = "#603813";
+  ctx.beginPath();
+  ctx.moveTo(942, 490);
+  ctx.lineTo(1098, 420);
+  ctx.lineTo(1098, 60);
+  ctx.lineTo(942, 130);
+  ctx.lineTo(942, 490);
+  ctx.fill();
+  ctx.fillStyle = "#603813";
+  ctx.beginPath();
+  ctx.moveTo(177, 60);
+  ctx.lineTo(20, 130);
+  ctx.lineTo(177, 130);
+  ctx.lineTo(177, 60);
+  ctx.fill();
+  ctx.save();
+  ctx.translate(416, 384);
+  ctx.rotate(0, 0);
+  ctx.scale(1, 1);
+  ctx.fillText("1", 0, 0);
+  ctx.restore();
+}
+
+function Lager_2() {
+  // --------======#### START ####======--------
+  ctx.fillStyle = "#754C24";
+  ctx.beginPath();
+  ctx.moveTo(176, 507);
+  ctx.lineTo(1097, 507);
+  ctx.lineTo(1097, 867);
+  ctx.lineTo(176, 867);
+  ctx.lineTo(176, 507);
+  ctx.fill();
+  ctx.fillStyle = "#8C6239";
+  ctx.beginPath();
+  ctx.moveTo(20, 577);
+  ctx.lineTo(941, 577);
+  ctx.lineTo(941, 937);
+  ctx.lineTo(20, 937);
+  ctx.lineTo(20, 577);
+  ctx.fill();
+  ctx.fillStyle = "#603813";
+  ctx.beginPath();
+  ctx.moveTo(941, 937);
+  ctx.lineTo(1097, 867);
+  ctx.lineTo(1097, 507);
+  ctx.lineTo(941, 577);
+  ctx.lineTo(941, 937);
+  ctx.fill();
+  ctx.fillStyle = "#603813";
+  ctx.beginPath();
+  ctx.moveTo(177, 507);
+  ctx.lineTo(20, 577);
+  ctx.lineTo(177, 577);
+  ctx.lineTo(177, 507);
+  ctx.fill();
+  ctx.save();
+  ctx.translate(410, 838);
+  ctx.rotate(0, 0);
+  ctx.scale(1, 1);
+  ctx.fillText("2", 0, 0);
+  ctx.restore();
+  // --------======#### END ####======--------
+}
+
+function Lager_3() {
+  // --------======#### START ####======--------
+  // --------======#### START ####======--------
+  // --------======#### START ####======--------
+  ctx.fillStyle = "#FFC280";
+  ctx.beginPath();
+  ctx.moveTo(1512, 493);
+  ctx.bezierCurveTo(1514, 493, 1514, 490, 1512, 490);
+  ctx.bezierCurveTo(1510, 490, 1510, 493, 1512, 493);
+  ctx.lineTo(1512, 493);
+  ctx.lineTo(1512, 493);
+  ctx.fill();
+  // --------======#### END ####======--------
+  // --------======#### END ####======--------
+  ctx.fillStyle = "#754C24";
+  ctx.beginPath();
+  ctx.moveTo(1236, 507);
+  ctx.lineTo(1901, 507);
+  ctx.lineTo(1901, 867);
+  ctx.lineTo(1236, 867);
+  ctx.lineTo(1236, 507);
+  ctx.fill();
+  ctx.fillStyle = "#8C6239";
+  ctx.beginPath();
+  ctx.moveTo(1124, 577);
+  ctx.lineTo(1788, 577);
+  ctx.lineTo(1788, 937);
+  ctx.lineTo(1124, 937);
+  ctx.lineTo(1124, 577);
+  ctx.fill();
+  ctx.fillStyle = "#603813";
+  ctx.beginPath();
+  ctx.moveTo(1787, 937);
+  ctx.lineTo(1901, 867);
+  ctx.lineTo(1901, 507);
+  ctx.lineTo(1787, 577);
+  ctx.lineTo(1787, 937);
+  ctx.fill();
+  ctx.fillStyle = "#603813";
+  ctx.beginPath();
+  ctx.moveTo(1236, 507);
+  ctx.lineTo(1123, 577);
+  ctx.lineTo(1236, 577);
+  ctx.lineTo(1236, 507);
+  ctx.fill();
+  ctx.save();
+  ctx.translate(1414, 838);
+  ctx.rotate(0, 0);
+  ctx.scale(1, 1);
+  ctx.fillText("3", 0, 0);
+  ctx.restore();
+  // --------======#### END ####======--------
+}
+
+// Tile Parameters - We need width and height of tiles as well as offset to te left and top of first tile
+// Each ground tile is approximately 82 by 48 units and therefore the transform is roughly half that at 41 and 24
+var tileWidth = 940;
+var tileHeight = 520;
+var tileOffsX = 10;
+var tileOffsY = 10;
+var tileLean = tileWidth / tileHeight;
+
+// Current Hover Tile
+var hx = 0,
+  hy = 0,
+  mx = 0,
+  my = 0;
+
+// Tilemap
+var tiles = [
+  [0, 0],
+  [0, 0],
+];
+
+//Initializations
+function init() {
+  drawTiles();
+}
+
+// Iterate over tile array and draw boxes accordingly
+function drawTiles() {
+  ctx.clearRect(0, 0, 1920, 1080);
+  Lager_1();
+  Lager_2();
+  Lager_3();
+
+  // Redraw Tiles
+  for (cy = 0; cy < 2; cy++) {
+    for (cx = 0; cx < 2; cx++) {
+      if (cx == hx && cy == hy) {
+        drawBox(
+          tileOffsX + tileWidth * cx,
+          tileOffsY + cy * tileHeight,
+          "#22336633",
+          "#9677B533"
+        );
+      } else if (tiles[cx][cy] == 0) {
+        drawBox(
+          tileOffsX + tileWidth * cx,
+          tileOffsY + cy * tileHeight,
+          "#44444433",
+          "#ffffff33"
+        );
+      } else {
+        drawBox(
+          tileOffsX + tileWidth * cx,
+          tileOffsY + cy * tileHeight,
+          "#33662233",
+          "#B3D67633"
+        );
+      }
+    }
+  }
+}
+
+// Screen coordinate to tilespace coordinate
+function screenToTile(sx, sy) {
+  var txc = sx - tileOffsX;
+  var tyc = sy - tileOffsY;
+
+  // Number of tile
+  var tcx = Math.round(txc / tileWidth + 0.1);
+  var tcy = Math.round(tyc / tileHeight + 0.1);
+
+  console.log(tcx, tcy);
+
+  // Coordinate in tile
+  var tx = Math.round(txc % tileWidth);
+  var ty = Math.round(tyc % tileHeight);
+
+  return { x: tcx, y: tcy }; //Returns the tile coordinate
+}
+
+//This function is called by the onmousemove event for the canvas element
+function mouseMove(e) {
+  var rect = e.target.getBoundingClientRect();
+  mx = e.clientX - rect.left; //x position within the element.
+  my = e.clientY - rect.top; //y position within the element.
+
+  //Find the position of the canvas element
+  var tc = screenToTile(mx, my);
+  if (hx != tc.x || hy != tc.y) {
+    hx = tc.x;
+    hy = tc.y;
+    drawTiles();
+  }
+}
+
+//This function is called when a mouse button is pressed down on the canvas element
+function mouseDown(event) {
+  //Find the position of the canvas element
+  var tc = screenToTile(mx, my);
+
+  tiles[tc.x][tc.y] = 1;
+  drawTiles();
+}
+
+//Draws a box tile at coordinate X,Y cavas code imported from svg
+function drawBox(x, y, strokecolor, fillcolor) {
+  ctx.save();
+  ctx.translate(x, y);
+
+  ctx.strokeStyle = strokecolor;
+  ctx.fillStyle = fillcolor;
+  ctx.lineWidth = 1.5;
+
+  ctx.globalAlpha = 1.0;
+  ctx.beginPath();
+  ctx.moveTo(tileOffsX, tileOffsY);
+  ctx.lineTo(tileWidth, tileOffsY);
+  ctx.lineTo(tileWidth, tileHeight);
+  ctx.lineTo(tileOffsX, tileHeight);
+  ctx.closePath();
+
+  if (fillcolor != "") ctx.fill();
+  if (strokecolor != "") ctx.stroke();
+
+  ctx.restore();
+}
+
+init();
