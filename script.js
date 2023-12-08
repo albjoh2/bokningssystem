@@ -459,6 +459,7 @@ ctx.font = "normal 250px Arial";
 
 function Lager_1() {
   ctx.globalAlpha = 1.0;
+  //room 1
   ctx.fillStyle = "#FFC280";
   ctx.beginPath();
   ctx.moveTo(112, -20);
@@ -504,10 +505,7 @@ function Lager_1() {
   ctx.scale(1, 1);
   ctx.fillText("1", 0, 0);
   ctx.restore();
-}
-
-function Lager_2() {
-  // --------======#### START ####======--------
+  //room 2
   ctx.fillStyle = "#754C24";
   ctx.beginPath();
   ctx.moveTo(176, 507);
@@ -545,13 +543,7 @@ function Lager_2() {
   ctx.scale(1, 1);
   ctx.fillText("2", 0, 0);
   ctx.restore();
-  // --------======#### END ####======--------
-}
-
-function Lager_3() {
-  // --------======#### START ####======--------
-  // --------======#### START ####======--------
-  // --------======#### START ####======--------
+  //room 3
   ctx.fillStyle = "#FFC280";
   ctx.beginPath();
   ctx.moveTo(1512, 493);
@@ -560,8 +552,6 @@ function Lager_3() {
   ctx.lineTo(1512, 493);
   ctx.lineTo(1512, 493);
   ctx.fill();
-  // --------======#### END ####======--------
-  // --------======#### END ####======--------
   ctx.fillStyle = "#754C24";
   ctx.beginPath();
   ctx.moveTo(1236, 507);
@@ -599,25 +589,24 @@ function Lager_3() {
   ctx.scale(1, 1);
   ctx.fillText("3", 0, 0);
   ctx.restore();
-  // --------======#### END ####======--------
 }
 
 // Tile Parameters - We need width and height of tiles as well as offset to te left and top of first tile
 // Each ground tile is approximately 82 by 48 units and therefore the transform is roughly half that at 41 and 24
-var tileWidth = 940;
-var tileHeight = 520;
-var tileOffsX = 10;
-var tileOffsY = 10;
-var tileLean = tileWidth / tileHeight;
+let tileWidth = 940;
+let tileHeight = 520;
+let tileOffsX = 10;
+let tileOffsY = 10;
+let tileLean = tileWidth / tileHeight;
 
 // Current Hover Tile
-var hx = 0,
+let hx = 0,
   hy = 0,
   mx = 0,
   my = 0;
 
 // Tilemap
-var tiles = [
+let tiles = [
   [0, 0],
   [0, 0],
 ];
@@ -631,32 +620,30 @@ function init() {
 function drawTiles() {
   ctx.clearRect(0, 0, 1920, 1080);
   Lager_1();
-  Lager_2();
-  Lager_3();
 
   // Redraw Tiles
   for (cy = 0; cy < 2; cy++) {
     for (cx = 0; cx < 2; cx++) {
-      if (cx == hx && cy == hy) {
+      if (tiles[cx][cy] == 1) {
         drawBox(
           tileOffsX + tileWidth * cx,
           tileOffsY + cy * tileHeight,
-          "#22336633",
-          "#9677B533"
+
+          "#ef752699"
         );
-      } else if (tiles[cx][cy] == 0) {
+      } else if (cx == hx && cy == hy) {
         drawBox(
           tileOffsX + tileWidth * cx,
           tileOffsY + cy * tileHeight,
-          "#44444433",
-          "#ffffff33"
+
+          "#ffffff88"
         );
       } else {
         drawBox(
           tileOffsX + tileWidth * cx,
           tileOffsY + cy * tileHeight,
-          "#33662233",
-          "#B3D67633"
+
+          "#ffffff00"
         );
       }
     }
@@ -665,30 +652,30 @@ function drawTiles() {
 
 // Screen coordinate to tilespace coordinate
 function screenToTile(sx, sy) {
-  var txc = sx - tileOffsX;
-  var tyc = sy - tileOffsY;
+  let txc = sx - tileOffsX;
+  let tyc = sy - tileOffsY;
 
   // Number of tile
-  var tcx = Math.round(txc / tileWidth + 0.1);
-  var tcy = Math.round(tyc / tileHeight + 0.1);
+  let tcx = Math.round(txc / tileWidth + 0.1);
+  let tcy = Math.round(tyc / tileHeight + 0.1);
 
   console.log(tcx, tcy);
 
   // Coordinate in tile
-  var tx = Math.round(txc % tileWidth);
-  var ty = Math.round(tyc % tileHeight);
+  let tx = Math.round(txc % tileWidth);
+  let ty = Math.round(tyc % tileHeight);
 
   return { x: tcx, y: tcy }; //Returns the tile coordinate
 }
 
 //This function is called by the onmousemove event for the canvas element
 function mouseMove(e) {
-  var rect = e.target.getBoundingClientRect();
+  let rect = e.target.getBoundingClientRect();
   mx = e.clientX - rect.left; //x position within the element.
   my = e.clientY - rect.top; //y position within the element.
 
   //Find the position of the canvas element
-  var tc = screenToTile(mx, my);
+  let tc = screenToTile(mx, my);
   if (hx != tc.x || hy != tc.y) {
     hx = tc.x;
     hy = tc.y;
@@ -699,20 +686,48 @@ function mouseMove(e) {
 //This function is called when a mouse button is pressed down on the canvas element
 function mouseDown(event) {
   //Find the position of the canvas element
-  var tc = screenToTile(mx, my);
+  let tc = screenToTile(mx, my);
+  tiles = [
+    [0, 0],
+    [0, 0],
+  ];
+
+  if (tc.x == 0 && tc.y == 0) {
+    document.getElementById("resIDA").value = "1";
+    document.getElementById("searchAva").click();
+  } else if (tc.x == 0 && tc.y == 1) {
+    document.getElementById("resIDA").value = "2";
+    document.getElementById("searchAva").click();
+  } else if (tc.x == 1 && tc.y == 1) {
+    document.getElementById("resIDA").value = "3";
+    document.getElementById("searchAva").click();
+  } else if (tc.x == 1 && tc.y == 0) {
+    return;
+  }
 
   tiles[tc.x][tc.y] = 1;
+
   drawTiles();
 }
 
 //Draws a box tile at coordinate X,Y cavas code imported from svg
-function drawBox(x, y, strokecolor, fillcolor) {
+function drawBox(x, y, fillcolor) {
   ctx.save();
   ctx.translate(x, y);
 
-  ctx.strokeStyle = strokecolor;
-  ctx.fillStyle = fillcolor;
-  ctx.lineWidth = 1.5;
+  //gradient for the box
+  let gradient = ctx.createRadialGradient(
+    tileWidth / 2,
+    tileHeight / 2,
+    0,
+    tileWidth / 2,
+    tileHeight / 2,
+    tileWidth / 4
+  );
+
+  gradient.addColorStop(0, fillcolor);
+  gradient.addColorStop(1, "#ffffff00");
+  ctx.fillStyle = gradient;
 
   ctx.globalAlpha = 1.0;
   ctx.beginPath();
@@ -722,8 +737,7 @@ function drawBox(x, y, strokecolor, fillcolor) {
   ctx.lineTo(tileOffsX, tileHeight);
   ctx.closePath();
 
-  if (fillcolor != "") ctx.fill();
-  if (strokecolor != "") ctx.stroke();
+  ctx.fill();
 
   ctx.restore();
 }
