@@ -90,8 +90,8 @@
         />
       </search>
       <canvas
-        id="myCanvas"
-        style="border: 1px solid #000; float: left; margin: 5px"
+        id="myCanvas1"
+        style="float: left; margin: 5px"
         onmousedown="mouseDown(event);"
         onmousemove="mouseMove(event, this);"
       ></canvas>
@@ -279,12 +279,21 @@
     </div>
 
     <div id="about" class="page">
-      <h1>About</h1>
-      <p>
-        We will give you the best enviroment to be in to discuss your companys
-        future. Feel the luxury of our vast conference rooms and take full
-        comfort in the service we will provide you.
-      </p>
+      <h1>Play and win</h1>
+      <p>You have a chance to win a free conference room for 1 hour.</p>
+
+      <div>
+        <canvas
+          id="myCanvas2"
+          onmousedown="mouseDown2(event);"
+          onmouseup="mouseUp2(event);"
+          onmousemove="mouseMove2(event, this);"
+        ></canvas>
+      </div>
+      <div>
+        <img style="border: 1px solid red" id="gobbe" src="Gobbe.png" />
+        <img style="border: 1px solid red" id="gobbe2" src="Gobbe2.png" />
+      </div>
     </div>
 
     <div id="contact" class="page">

@@ -451,144 +451,144 @@ function makeBooking(resourceNo) {
     });
 }
 
-let canvas = document.getElementById("myCanvas");
-let ctx = canvas.getContext("2d");
-canvas.width = 1920;
-canvas.height = 1080;
-ctx.font = "normal 250px Arial";
+let canvas1 = document.getElementById("myCanvas1");
+let ctx1 = canvas1.getContext("2d");
+canvas1.width = 1920;
+canvas1.height = 1080;
+ctx1.font = "normal 250px Arial";
 
 function Lager_1() {
-  ctx.globalAlpha = 1.0;
+  ctx1.globalAlpha = 1.0;
   //room 1
-  ctx.fillStyle = "#FFC280";
-  ctx.beginPath();
-  ctx.moveTo(112, -20);
-  ctx.bezierCurveTo(114, -20, 114, -23, 112, -23);
-  ctx.bezierCurveTo(110, -23, 110, -20, 112, -20);
-  ctx.lineTo(112, -20);
-  ctx.lineTo(112, -20);
-  ctx.fill();
-  ctx.fillStyle = "#754C24";
-  ctx.beginPath();
-  ctx.moveTo(177, 60);
-  ctx.lineTo(1098, 60);
-  ctx.lineTo(1098, 420);
-  ctx.lineTo(177, 420);
-  ctx.lineTo(177, 60);
-  ctx.fill();
-  ctx.fillStyle = "#8C6239";
-  ctx.beginPath();
-  ctx.moveTo(21, 130);
-  ctx.lineTo(942, 130);
-  ctx.lineTo(942, 490);
-  ctx.lineTo(21, 490);
-  ctx.lineTo(21, 130);
-  ctx.fill();
-  ctx.fillStyle = "#603813";
-  ctx.beginPath();
-  ctx.moveTo(942, 490);
-  ctx.lineTo(1098, 420);
-  ctx.lineTo(1098, 60);
-  ctx.lineTo(942, 130);
-  ctx.lineTo(942, 490);
-  ctx.fill();
-  ctx.fillStyle = "#603813";
-  ctx.beginPath();
-  ctx.moveTo(177, 60);
-  ctx.lineTo(20, 130);
-  ctx.lineTo(177, 130);
-  ctx.lineTo(177, 60);
-  ctx.fill();
-  ctx.save();
-  ctx.translate(416, 384);
-  ctx.rotate(0, 0);
-  ctx.scale(1, 1);
-  ctx.fillText("1", 0, 0);
-  ctx.restore();
+  ctx1.fillStyle = "#FFC280";
+  ctx1.beginPath();
+  ctx1.moveTo(112, -20);
+  ctx1.bezierCurveTo(114, -20, 114, -23, 112, -23);
+  ctx1.bezierCurveTo(110, -23, 110, -20, 112, -20);
+  ctx1.lineTo(112, -20);
+  ctx1.lineTo(112, -20);
+  ctx1.fill();
+  ctx1.fillStyle = "#754C24";
+  ctx1.beginPath();
+  ctx1.moveTo(177, 60);
+  ctx1.lineTo(1098, 60);
+  ctx1.lineTo(1098, 420);
+  ctx1.lineTo(177, 420);
+  ctx1.lineTo(177, 60);
+  ctx1.fill();
+  ctx1.fillStyle = "#8C6239";
+  ctx1.beginPath();
+  ctx1.moveTo(21, 130);
+  ctx1.lineTo(942, 130);
+  ctx1.lineTo(942, 490);
+  ctx1.lineTo(21, 490);
+  ctx1.lineTo(21, 130);
+  ctx1.fill();
+  ctx1.fillStyle = "#603813";
+  ctx1.beginPath();
+  ctx1.moveTo(942, 490);
+  ctx1.lineTo(1098, 420);
+  ctx1.lineTo(1098, 60);
+  ctx1.lineTo(942, 130);
+  ctx1.lineTo(942, 490);
+  ctx1.fill();
+  ctx1.fillStyle = "#603813";
+  ctx1.beginPath();
+  ctx1.moveTo(177, 60);
+  ctx1.lineTo(20, 130);
+  ctx1.lineTo(177, 130);
+  ctx1.lineTo(177, 60);
+  ctx1.fill();
+  ctx1.save();
+  ctx1.translate(416, 384);
+  ctx1.rotate(0, 0);
+  ctx1.scale(1, 1);
+  ctx1.fillText("1", 0, 0);
+  ctx1.restore();
   //room 2
-  ctx.fillStyle = "#754C24";
-  ctx.beginPath();
-  ctx.moveTo(176, 507);
-  ctx.lineTo(1097, 507);
-  ctx.lineTo(1097, 867);
-  ctx.lineTo(176, 867);
-  ctx.lineTo(176, 507);
-  ctx.fill();
-  ctx.fillStyle = "#8C6239";
-  ctx.beginPath();
-  ctx.moveTo(20, 577);
-  ctx.lineTo(941, 577);
-  ctx.lineTo(941, 937);
-  ctx.lineTo(20, 937);
-  ctx.lineTo(20, 577);
-  ctx.fill();
-  ctx.fillStyle = "#603813";
-  ctx.beginPath();
-  ctx.moveTo(941, 937);
-  ctx.lineTo(1097, 867);
-  ctx.lineTo(1097, 507);
-  ctx.lineTo(941, 577);
-  ctx.lineTo(941, 937);
-  ctx.fill();
-  ctx.fillStyle = "#603813";
-  ctx.beginPath();
-  ctx.moveTo(177, 507);
-  ctx.lineTo(20, 577);
-  ctx.lineTo(177, 577);
-  ctx.lineTo(177, 507);
-  ctx.fill();
-  ctx.save();
-  ctx.translate(410, 838);
-  ctx.rotate(0, 0);
-  ctx.scale(1, 1);
-  ctx.fillText("2", 0, 0);
-  ctx.restore();
+  ctx1.fillStyle = "#754C24";
+  ctx1.beginPath();
+  ctx1.moveTo(176, 507);
+  ctx1.lineTo(1097, 507);
+  ctx1.lineTo(1097, 867);
+  ctx1.lineTo(176, 867);
+  ctx1.lineTo(176, 507);
+  ctx1.fill();
+  ctx1.fillStyle = "#8C6239";
+  ctx1.beginPath();
+  ctx1.moveTo(20, 577);
+  ctx1.lineTo(941, 577);
+  ctx1.lineTo(941, 937);
+  ctx1.lineTo(20, 937);
+  ctx1.lineTo(20, 577);
+  ctx1.fill();
+  ctx1.fillStyle = "#603813";
+  ctx1.beginPath();
+  ctx1.moveTo(941, 937);
+  ctx1.lineTo(1097, 867);
+  ctx1.lineTo(1097, 507);
+  ctx1.lineTo(941, 577);
+  ctx1.lineTo(941, 937);
+  ctx1.fill();
+  ctx1.fillStyle = "#603813";
+  ctx1.beginPath();
+  ctx1.moveTo(177, 507);
+  ctx1.lineTo(20, 577);
+  ctx1.lineTo(177, 577);
+  ctx1.lineTo(177, 507);
+  ctx1.fill();
+  ctx1.save();
+  ctx1.translate(410, 838);
+  ctx1.rotate(0, 0);
+  ctx1.scale(1, 1);
+  ctx1.fillText("2", 0, 0);
+  ctx1.restore();
   //room 3
-  ctx.fillStyle = "#FFC280";
-  ctx.beginPath();
-  ctx.moveTo(1512, 493);
-  ctx.bezierCurveTo(1514, 493, 1514, 490, 1512, 490);
-  ctx.bezierCurveTo(1510, 490, 1510, 493, 1512, 493);
-  ctx.lineTo(1512, 493);
-  ctx.lineTo(1512, 493);
-  ctx.fill();
-  ctx.fillStyle = "#754C24";
-  ctx.beginPath();
-  ctx.moveTo(1236, 507);
-  ctx.lineTo(1901, 507);
-  ctx.lineTo(1901, 867);
-  ctx.lineTo(1236, 867);
-  ctx.lineTo(1236, 507);
-  ctx.fill();
-  ctx.fillStyle = "#8C6239";
-  ctx.beginPath();
-  ctx.moveTo(1124, 577);
-  ctx.lineTo(1788, 577);
-  ctx.lineTo(1788, 937);
-  ctx.lineTo(1124, 937);
-  ctx.lineTo(1124, 577);
-  ctx.fill();
-  ctx.fillStyle = "#603813";
-  ctx.beginPath();
-  ctx.moveTo(1787, 937);
-  ctx.lineTo(1901, 867);
-  ctx.lineTo(1901, 507);
-  ctx.lineTo(1787, 577);
-  ctx.lineTo(1787, 937);
-  ctx.fill();
-  ctx.fillStyle = "#603813";
-  ctx.beginPath();
-  ctx.moveTo(1236, 507);
-  ctx.lineTo(1123, 577);
-  ctx.lineTo(1236, 577);
-  ctx.lineTo(1236, 507);
-  ctx.fill();
-  ctx.save();
-  ctx.translate(1414, 838);
-  ctx.rotate(0, 0);
-  ctx.scale(1, 1);
-  ctx.fillText("3", 0, 0);
-  ctx.restore();
+  ctx1.fillStyle = "#FFC280";
+  ctx1.beginPath();
+  ctx1.moveTo(1512, 493);
+  ctx1.bezierCurveTo(1514, 493, 1514, 490, 1512, 490);
+  ctx1.bezierCurveTo(1510, 490, 1510, 493, 1512, 493);
+  ctx1.lineTo(1512, 493);
+  ctx1.lineTo(1512, 493);
+  ctx1.fill();
+  ctx1.fillStyle = "#754C24";
+  ctx1.beginPath();
+  ctx1.moveTo(1236, 507);
+  ctx1.lineTo(1901, 507);
+  ctx1.lineTo(1901, 867);
+  ctx1.lineTo(1236, 867);
+  ctx1.lineTo(1236, 507);
+  ctx1.fill();
+  ctx1.fillStyle = "#8C6239";
+  ctx1.beginPath();
+  ctx1.moveTo(1124, 577);
+  ctx1.lineTo(1788, 577);
+  ctx1.lineTo(1788, 937);
+  ctx1.lineTo(1124, 937);
+  ctx1.lineTo(1124, 577);
+  ctx1.fill();
+  ctx1.fillStyle = "#603813";
+  ctx1.beginPath();
+  ctx1.moveTo(1787, 937);
+  ctx1.lineTo(1901, 867);
+  ctx1.lineTo(1901, 507);
+  ctx1.lineTo(1787, 577);
+  ctx1.lineTo(1787, 937);
+  ctx1.fill();
+  ctx1.fillStyle = "#603813";
+  ctx1.beginPath();
+  ctx1.moveTo(1236, 507);
+  ctx1.lineTo(1123, 577);
+  ctx1.lineTo(1236, 577);
+  ctx1.lineTo(1236, 507);
+  ctx1.fill();
+  ctx1.save();
+  ctx1.translate(1414, 838);
+  ctx1.rotate(0, 0);
+  ctx1.scale(1, 1);
+  ctx1.fillText("3", 0, 0);
+  ctx1.restore();
 }
 
 // Tile Parameters - We need width and height of tiles as well as offset to te left and top of first tile
@@ -618,7 +618,7 @@ function init() {
 
 // Iterate over tile array and draw boxes accordingly
 function drawTiles() {
-  ctx.clearRect(0, 0, 1920, 1080);
+  ctx1.clearRect(0, 0, 1920, 1080);
   Lager_1();
 
   // Redraw Tiles
@@ -628,21 +628,23 @@ function drawTiles() {
         drawBox(
           tileOffsX + tileWidth * cx,
           tileOffsY + cy * tileHeight,
-
-          "#ef752699"
+          "#ef752633",
+          "#ef752655"
         );
       } else if (cx == hx && cy == hy) {
         drawBox(
           tileOffsX + tileWidth * cx,
           tileOffsY + cy * tileHeight,
 
-          "#ffffff88"
+          "#ef752699",
+          "#ffffff00"
         );
       } else {
         drawBox(
           tileOffsX + tileWidth * cx,
           tileOffsY + cy * tileHeight,
 
+          "#ffffff00",
           "#ffffff00"
         );
       }
@@ -668,13 +670,13 @@ function screenToTile(sx, sy) {
   return { x: tcx, y: tcy }; //Returns the tile coordinate
 }
 
-//This function is called by the onmousemove event for the canvas element
+//This function is called by the onmousemove event for the canvas1 element
 function mouseMove(e) {
   let rect = e.target.getBoundingClientRect();
   mx = e.clientX - rect.left; //x position within the element.
   my = e.clientY - rect.top; //y position within the element.
 
-  //Find the position of the canvas element
+  //Find the position of the canvas1 element
   let tc = screenToTile(mx, my);
   if (hx != tc.x || hy != tc.y) {
     hx = tc.x;
@@ -683,9 +685,9 @@ function mouseMove(e) {
   }
 }
 
-//This function is called when a mouse button is pressed down on the canvas element
+//This function is called when a mouse button is pressed down on the canvas1 element
 function mouseDown(event) {
-  //Find the position of the canvas element
+  //Find the position of the canvas1 element
   let tc = screenToTile(mx, my);
   tiles = [
     [0, 0],
@@ -711,12 +713,12 @@ function mouseDown(event) {
 }
 
 //Draws a box tile at coordinate X,Y cavas code imported from svg
-function drawBox(x, y, fillcolor) {
-  ctx.save();
-  ctx.translate(x, y);
+function drawBox(x, y, fillcolor, fillcolor2) {
+  ctx1.save();
+  ctx1.translate(x, y);
 
   //gradient for the box
-  let gradient = ctx.createRadialGradient(
+  let gradient = ctx1.createRadialGradient(
     tileWidth / 2,
     tileHeight / 2,
     0,
@@ -726,20 +728,179 @@ function drawBox(x, y, fillcolor) {
   );
 
   gradient.addColorStop(0, fillcolor);
-  gradient.addColorStop(1, "#ffffff00");
-  ctx.fillStyle = gradient;
+  gradient.addColorStop(0.5, fillcolor2);
+  gradient.addColorStop(1, "#ff000000");
+  ctx1.fillStyle = gradient;
 
-  ctx.globalAlpha = 1.0;
-  ctx.beginPath();
-  ctx.moveTo(tileOffsX, tileOffsY);
-  ctx.lineTo(tileWidth, tileOffsY);
-  ctx.lineTo(tileWidth, tileHeight);
-  ctx.lineTo(tileOffsX, tileHeight);
-  ctx.closePath();
+  ctx1.globalAlpha = 1.0;
+  ctx1.beginPath();
+  ctx1.moveTo(tileOffsX, tileOffsY);
+  ctx1.lineTo(tileWidth, tileOffsY);
+  ctx1.lineTo(tileWidth, tileHeight);
+  ctx1.lineTo(tileOffsX, tileHeight);
+  ctx1.closePath();
 
-  ctx.fill();
+  ctx1.fill();
 
-  ctx.restore();
+  ctx1.restore();
 }
 
 init();
+
+var ctx2;
+var img;
+// Array to hold snowflakes
+var snowflakes = new Array();
+
+// Number of flakes
+var numflakes = 10;
+
+var mx2, my2;
+
+let mouseIsDown = false;
+
+let points = 0;
+let gobbe = document.getElementById("gobbe");
+let gobbe2 = document.getElementById("gobbe2");
+
+function drawAmoeba(v) {
+  // Code available by viewing source in preview
+  if (v == 1) {
+    ctx2.drawImage(gobbe, 0, -20, 20, 40);
+  } else {
+    ctx2.drawImage(gobbe2, 0, -20, 20, 40);
+  }
+}
+
+//This function is called by the onmousemove event for the canvas element
+function mouseMove2(e, t) {
+  var rect = e.target.getBoundingClientRect();
+  mx2 = e.clientX - rect.left; //x position within the element.
+  my2 = e.clientY - rect.top; //y position within the element.
+}
+
+//This function is called by the onmousemove event for the canvas element
+function mouseDown2() {
+  mouseIsDown = true;
+}
+function mouseUp2() {
+  mouseIsDown = false;
+}
+
+// Constructor for snowflakes
+function Snowflake(xk, yk, spd) {
+  this.xk = xk;
+  this.yk = yk;
+  this.spd = spd;
+}
+
+function drawgraphics() {
+  ctx2.clearRect(0, 0, 720, 540);
+
+  drawSymbol(50, 50, 550, 500);
+  drawDotted(50, 50, 550, 500, "#6af", "#ffe");
+
+  ctx2.font = "30px Arial";
+  ctx2.fillText(points, 350, 200);
+
+  ctx2.beginPath();
+  ctx2.moveTo(mx2 - 10, my2 - 10);
+  ctx2.lineTo(mx2 + 10, my2 + 10);
+  ctx2.moveTo(mx2 + 10, my2 - 10);
+  ctx2.lineTo(mx2 - 10, my2 + 10);
+  ctx2.stroke();
+
+  for (var i = 0; i < numflakes; i++) {
+    ctx2.save();
+    ctx2.translate(snowflakes[i].xk, snowflakes[i].yk);
+
+    var dx, dy, dist;
+    dx = mx2 - snowflakes[i].xk;
+    dy = my2 - snowflakes[i].yk;
+    dist = Math.sqrt(dx * dx + dy * dy);
+    if (dist < 20) {
+      drawAmoeba(1);
+      if (mouseIsDown) {
+        snowflakes.splice(i, 1);
+        numflakes--;
+        points++;
+      }
+    } else {
+      drawAmoeba(2);
+    }
+
+    ctx2.restore();
+    if (snowflakes[i] == undefined) continue;
+    snowflakes[i].yk += snowflakes[i].spd;
+    if (snowflakes[i].yk > 550) snowflakes[i].yk -= 560;
+  }
+  setTimeout(function () {
+    drawgraphics();
+  }, 30);
+}
+
+function drawSymbol(x1, y1, x2, y2) {
+  var hy = (y2 - y1) * 0.5;
+  var hx = (x2 - x1) * 0.5;
+
+  ctx2.beginPath();
+
+  ctx2.moveTo(x1, y1 + hy);
+  ctx2.lineTo(x1 + hx, y1);
+  ctx2.lineTo(x2, y1 + hy);
+  ctx2.lineTo(x1 + hx, y2);
+  ctx2.closePath();
+
+  ctx2.clip();
+}
+
+function drawDotted(x1, y1, x2, y2, col1, col2) {
+  ctx2.save();
+
+  ctx2.beginPath();
+  ctx2.moveTo(x1, y1);
+  ctx2.lineTo(x2, y1);
+  ctx2.lineTo(x2, y2);
+  ctx2.lineTo(x1, y2);
+  ctx2.closePath();
+
+  var gradient1 = ctx2.createLinearGradient(0, 0, 0, 500);
+  gradient1.addColorStop(0, "#8DF");
+  gradient1.addColorStop(0.5, "#AFF");
+  gradient1.addColorStop(1, "#128");
+  ctx2.fillStyle = gradient1;
+
+  ctx2.fill();
+
+  ctx2.fillStyle = col2;
+
+  for (i = 0; i < 12; i++) {
+    for (var j = 0; j < 5; j++) {
+      ctx2.beginPath();
+      ctx2.arc(x1 + i * 75, y1 + j * 100, 20, 0, 2 * Math.PI, false);
+      ctx2.fill();
+
+      ctx2.beginPath();
+      ctx2.arc(x1 + i * 75 - 25, y1 + j * 100 + 50, 20, 0, 2 * Math.PI, false);
+      ctx2.fill();
+    }
+  }
+}
+
+function startupCanvas() {
+  for (var i = 0; i < numflakes; i++) {
+    snowflakes[i] = new Snowflake(
+      Math.round(Math.random() * 720),
+      Math.round(Math.random() * 540),
+      Math.round(Math.random() * 5 + 1)
+    );
+  }
+
+  var elem = document.getElementById("myCanvas2");
+  elem.width = 720;
+  elem.height = 540;
+  ctx2 = elem.getContext("2d");
+  drawgraphics();
+}
+
+startupCanvas();
