@@ -591,37 +591,30 @@ function Lager_1() {
   ctx1.restore();
 }
 
-// Tile Parameters - We need width and height of tiles as well as offset to te left and top of first tile
-// Each ground tile is approximately 82 by 48 units and therefore the transform is roughly half that at 41 and 24
 let tileWidth = 940;
 let tileHeight = 520;
 let tileOffsX = 10;
 let tileOffsY = 10;
 let tileLean = tileWidth / tileHeight;
 
-// Current Hover Tile
 let hx = 0,
   hy = 0,
   mx = 0,
   my = 0;
 
-// Tilemap
 let tiles = [
   [0, 0],
   [0, 0],
 ];
 
-//Initializations
 function init() {
   drawTiles();
 }
 
-// Iterate over tile array and draw boxes accordingly
 function drawTiles() {
   ctx1.clearRect(0, 0, 1920, 1080);
   Lager_1();
 
-  // Redraw Tiles
   for (cy = 0; cy < 2; cy++) {
     for (cx = 0; cx < 2; cx++) {
       if (tiles[cx][cy] == 1) {
@@ -652,31 +645,23 @@ function drawTiles() {
   }
 }
 
-// Screen coordinate to tilespace coordinate
 function screenToTile(sx, sy) {
   let txc = sx - tileOffsX;
   let tyc = sy - tileOffsY;
 
-  // Number of tile
   let tcx = Math.round(txc / tileWidth + 0.1);
   let tcy = Math.round(tyc / tileHeight + 0.1);
 
   console.log(tcx, tcy);
 
-  // Coordinate in tile
-  let tx = Math.round(txc % tileWidth);
-  let ty = Math.round(tyc % tileHeight);
-
-  return { x: tcx, y: tcy }; //Returns the tile coordinate
+  return { x: tcx, y: tcy };
 }
 
-//This function is called by the onmousemove event for the canvas1 element
 function mouseMove(e) {
   let rect = e.target.getBoundingClientRect();
-  mx = e.clientX - rect.left; //x position within the element.
-  my = e.clientY - rect.top; //y position within the element.
+  mx = e.clientX - rect.left;
+  my = e.clientY - rect.top;
 
-  //Find the position of the canvas1 element
   let tc = screenToTile(mx, my);
   if (hx != tc.x || hy != tc.y) {
     hx = tc.x;
@@ -685,9 +670,7 @@ function mouseMove(e) {
   }
 }
 
-//This function is called when a mouse button is pressed down on the canvas1 element
 function mouseDown(event) {
-  //Find the position of the canvas1 element
   let tc = screenToTile(mx, my);
   tiles = [
     [0, 0],
@@ -712,12 +695,10 @@ function mouseDown(event) {
   drawTiles();
 }
 
-//Draws a box tile at coordinate X,Y cavas code imported from svg
 function drawBox(x, y, fillcolor, fillcolor2) {
   ctx1.save();
   ctx1.translate(x, y);
 
-  //gradient for the box
   let gradient = ctx1.createRadialGradient(
     tileWidth / 2,
     tileHeight / 2,
@@ -749,22 +730,19 @@ init();
 
 var ctx2;
 var img;
-// Array to hold snowflakes
-var snowflakes = new Array();
+var gubbar = new Array();
 
-// Number of flakes
-var numflakes = 10;
+var numflakes = 12;
+let points = numflakes;
 
 var mx2, my2;
 
 let mouseIsDown = false;
 
-let points = 0;
 let gobbe = document.getElementById("gobbe");
 let gobbe2 = document.getElementById("gobbe2");
 
 function drawAmoeba(v) {
-  // Code available by viewing source in preview
   if (v == 1) {
     ctx2.drawImage(gobbe, 0, -20, 20, 40);
   } else {
@@ -772,14 +750,12 @@ function drawAmoeba(v) {
   }
 }
 
-//This function is called by the onmousemove event for the canvas element
 function mouseMove2(e, t) {
   var rect = e.target.getBoundingClientRect();
-  mx2 = e.clientX - rect.left; //x position within the element.
-  my2 = e.clientY - rect.top; //y position within the element.
+  mx2 = e.clientX - rect.left;
+  my2 = e.clientY - rect.top;
 }
 
-//This function is called by the onmousemove event for the canvas element
 function mouseDown2() {
   mouseIsDown = true;
 }
@@ -787,8 +763,7 @@ function mouseUp2() {
   mouseIsDown = false;
 }
 
-// Constructor for snowflakes
-function Snowflake(xk, yk, spd) {
+function Gubbe(xk, yk, spd) {
   this.xk = xk;
   this.yk = yk;
   this.spd = spd;
@@ -796,67 +771,53 @@ function Snowflake(xk, yk, spd) {
 
 function drawgraphics() {
   ctx2.clearRect(0, 0, 720, 540);
-
-  drawSymbol(50, 50, 550, 500);
-  drawDotted(50, 50, 550, 500, "#6af", "#ffe");
-
   ctx2.font = "30px Arial";
-  ctx2.fillText(points, 350, 200);
-
+  ctx2.fillText(points, 15, 50);
+  ctx2.save();
   ctx2.beginPath();
-  ctx2.moveTo(mx2 - 10, my2 - 10);
-  ctx2.lineTo(mx2 + 10, my2 + 10);
-  ctx2.moveTo(mx2 + 10, my2 - 10);
-  ctx2.lineTo(mx2 - 10, my2 + 10);
-  ctx2.stroke();
+  ctx2.arc(mx2, my2, 100, 0, 2 * Math.PI);
+
+  ctx2.clip();
+  drawDotted(0, 0, 720, 540, "#ffe");
 
   for (var i = 0; i < numflakes; i++) {
     ctx2.save();
-    ctx2.translate(snowflakes[i].xk, snowflakes[i].yk);
+    ctx2.translate(gubbar[i].xk, gubbar[i].yk);
 
     var dx, dy, dist;
-    dx = mx2 - snowflakes[i].xk;
-    dy = my2 - snowflakes[i].yk;
+    dx = mx2 - gubbar[i].xk;
+    dy = my2 - gubbar[i].yk;
     dist = Math.sqrt(dx * dx + dy * dy);
     if (dist < 20) {
       drawAmoeba(1);
       if (mouseIsDown) {
-        snowflakes.splice(i, 1);
+        gubbar.splice(i, 1);
         numflakes--;
-        points++;
+        points--;
       }
     } else {
       drawAmoeba(2);
     }
 
+    if (gubbar.length == 0) {
+      alert("You won!");
+      startupCanvas();
+    }
     ctx2.restore();
-    if (snowflakes[i] == undefined) continue;
-    snowflakes[i].yk += snowflakes[i].spd;
-    if (snowflakes[i].yk > 550) snowflakes[i].yk -= 560;
+    if (gubbar[i] == undefined) continue;
+    gubbar[i].yk += gubbar[i].spd;
+    if (gubbar[i].yk > 550) {
+      alert("Game Over");
+      startupCanvas();
+    }
   }
+  ctx2.restore();
   setTimeout(function () {
     drawgraphics();
   }, 30);
 }
 
-function drawSymbol(x1, y1, x2, y2) {
-  var hy = (y2 - y1) * 0.5;
-  var hx = (x2 - x1) * 0.5;
-
-  ctx2.beginPath();
-
-  ctx2.moveTo(x1, y1 + hy);
-  ctx2.lineTo(x1 + hx, y1);
-  ctx2.lineTo(x2, y1 + hy);
-  ctx2.lineTo(x1 + hx, y2);
-  ctx2.closePath();
-
-  ctx2.clip();
-}
-
-function drawDotted(x1, y1, x2, y2, col1, col2) {
-  ctx2.save();
-
+function drawDotted(x1, y1, x2, y2, col) {
   ctx2.beginPath();
   ctx2.moveTo(x1, y1);
   ctx2.lineTo(x2, y1);
@@ -865,34 +826,43 @@ function drawDotted(x1, y1, x2, y2, col1, col2) {
   ctx2.closePath();
 
   var gradient1 = ctx2.createLinearGradient(0, 0, 0, 500);
-  gradient1.addColorStop(0, "#8DF");
-  gradient1.addColorStop(0.5, "#AFF");
-  gradient1.addColorStop(1, "#128");
+  gradient1.addColorStop(0, "#8D5");
+  gradient1.addColorStop(0.5, "#AF5");
+  gradient1.addColorStop(1, "#182");
   ctx2.fillStyle = gradient1;
 
   ctx2.fill();
 
-  ctx2.fillStyle = col2;
+  ctx2.fillStyle = col;
 
   for (i = 0; i < 12; i++) {
-    for (var j = 0; j < 5; j++) {
-      ctx2.beginPath();
-      ctx2.arc(x1 + i * 75, y1 + j * 100, 20, 0, 2 * Math.PI, false);
-      ctx2.fill();
-
-      ctx2.beginPath();
-      ctx2.arc(x1 + i * 75 - 25, y1 + j * 100 + 50, 20, 0, 2 * Math.PI, false);
-      ctx2.fill();
-    }
+    ctx2.beginPath();
+    ctx2.rect(x1 + 60 * i, y1, 5, 830);
+    ctx2.fill();
   }
 }
 
 function startupCanvas() {
+  let takenFiles = [];
+
+  numflakes = 12;
+  points = numflakes;
+
+  function file() {
+    let file = Math.round(Math.random() * 11);
+    while (takenFiles.includes(file)) {
+      file = Math.round(Math.random() * 11);
+    }
+    takenFiles.push(file);
+
+    return file;
+  }
+
   for (var i = 0; i < numflakes; i++) {
-    snowflakes[i] = new Snowflake(
-      Math.round(Math.random() * 720),
-      Math.round(Math.random() * 540),
-      Math.round(Math.random() * 5 + 1)
+    gubbar[i] = new Gubbe(
+      Math.round(file()) * 60 + 20,
+      Math.round(0),
+      Math.random() * 2 + 1
     );
   }
 
@@ -902,5 +872,3 @@ function startupCanvas() {
   ctx2 = elem.getContext("2d");
   drawgraphics();
 }
-
-startupCanvas();
