@@ -451,6 +451,8 @@ function makeBooking(resourceNo) {
     });
 }
 
+//Här börjar koden till inbäddat innehåll
+
 let canvas1 = document.getElementById("myCanvas1");
 let ctx1 = canvas1.getContext("2d");
 canvas1.width = 1920;
@@ -613,7 +615,8 @@ function init() {
 
 function drawTiles() {
   ctx1.clearRect(0, 0, 1920, 1080);
-  Lager_1();
+  let x, y, z;
+  Lager_1(x, y, z);
 
   for (cy = 0; cy < 2; cy++) {
     for (cx = 0; cx < 2; cx++) {
@@ -866,9 +869,83 @@ function startupCanvas() {
     );
   }
 
-  var elem = document.getElementById("myCanvas2");
-  elem.width = 720;
-  elem.height = 540;
-  ctx2 = elem.getContext("2d");
+  var canvas2 = document.getElementById("myCanvas2");
+  canvas2.width = 720;
+  canvas2.height = 540;
+  ctx2 = canvas2.getContext("2d");
   drawgraphics();
 }
+
+var canvas3 = document.getElementById("myCanvas3");
+canvas3.width = window.innerWidth;
+canvas3.height = window.innerHeight;
+let ctx3 = canvas3.getContext("2d");
+let x = 0;
+let y = 0;
+let z = 0;
+
+function drawIcon() {
+  ctx3.beginPath();
+  ctx3.moveTo(248, 478);
+  ctx3.bezierCurveTo(120, 478, 20, 376, 20, 250);
+  ctx3.bezierCurveTo(22, 92, 122, 22, 248, 22);
+  ctx3.bezierCurveTo(359, 22, 452, 101, 472, 206);
+  ctx3.lineTo(496, 206);
+  ctx3.bezierCurveTo(476, 89, 373, 0, 250, 0);
+  ctx3.bezierCurveTo(112, 0, 0, 112, 0, 250);
+  ctx3.bezierCurveTo(20, 430, 112, 500, 250, 500);
+  ctx3.bezierCurveTo(373, 500, 476, 411, 496, 294);
+  ctx3.lineTo(472, 294);
+  ctx3.bezierCurveTo(452, 399, 359, 478, 248, 478);
+  ctx3.lineTo(248, 478);
+  ctx3.fillStyle = "#df6516";
+  ctx3.closePath();
+  ctx3.fill();
+}
+
+function oneSpin(x, y, z) {
+  ctx3.rotate(x);
+  ctx3.scale(y % 3, z % 3);
+  ctx3.rotate(x);
+  drawIcon();
+}
+
+function animate() {
+  x += 0.01;
+  y += 0.01;
+  z += 0.01;
+
+  if (x > 1.72) {
+    x = 0;
+  }
+  if (y > 1.72) {
+    y = 0;
+  }
+  if (z > 1.72) {
+    z = 0;
+  }
+
+  ctx3.clearRect(0, 0, canvas3.width, canvas3.height);
+
+  var ev1 = easeInOutQuad(x);
+  var ev2 = easeInOutQuad(y);
+  var ev3 = easeInOutQuad(z);
+
+  ctx3.save();
+  ctx3.translate(690, 400);
+
+  for (let i = 0; i < 30; i++) {
+    oneSpin(ev1, ev2, ev3);
+    ctx3.translate(ev1, ev1);
+  }
+
+  ctx3.restore();
+
+  window.requestAnimationFrame(animate);
+}
+
+function easeInOutQuad(x) {
+  return x < 0.5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2;
+}
+
+animate();
