@@ -705,7 +705,7 @@ function drawBox(x, y, fillcolor, fillcolor2) {
   let gradient = ctx1.createRadialGradient(
     tileWidth / 2,
     tileHeight / 2,
-    0,
+    tileWidth / 10,
     tileWidth / 2,
     tileHeight / 2,
     tileWidth / 4
@@ -731,21 +731,21 @@ function drawBox(x, y, fillcolor, fillcolor2) {
 
 init();
 
-var ctx2;
-var img;
-var gubbar = new Array();
+let ctx2;
+let img;
+let gubbar = new Array();
 
-var numflakes = 12;
-let points = numflakes;
+let antalGobbar = 12;
+let points = antalGobbar;
 
-var mx2, my2;
+let mx2, my2;
 
 let mouseIsDown = false;
 
 let gobbe = document.getElementById("gobbe");
 let gobbe2 = document.getElementById("gobbe2");
 
-function drawAmoeba(v) {
+function drawGobbe(v) {
   if (v == 1) {
     ctx2.drawImage(gobbe, 0, -20, 20, 40);
   } else {
@@ -753,8 +753,8 @@ function drawAmoeba(v) {
   }
 }
 
-function mouseMove2(e, t) {
-  var rect = e.target.getBoundingClientRect();
+function mouseMove2(e) {
+  let rect = e.target.getBoundingClientRect();
   mx2 = e.clientX - rect.left;
   my2 = e.clientY - rect.top;
 }
@@ -766,11 +766,13 @@ function mouseUp2() {
   mouseIsDown = false;
 }
 
-function Gubbe(xk, yk, spd) {
+function Gobbe(xk, yk, spd) {
   this.xk = xk;
   this.yk = yk;
   this.spd = spd;
 }
+
+let clipSize = 200;
 
 function drawgraphics() {
   ctx2.clearRect(0, 0, 720, 540);
@@ -778,28 +780,35 @@ function drawgraphics() {
   ctx2.fillText(points, 15, 50);
   ctx2.save();
   ctx2.beginPath();
-  ctx2.arc(mx2, my2, 100, 0, 2 * Math.PI);
-
+  if (clipSize > 100) {
+    for (let i = 0; i < 24; i++) {
+      ctx2.arc(mx2 - 60 * i + 12 * 60, my2, clipSize, 0, 2 * Math.PI);
+    }
+  } else {
+    ctx2.arc(mx2, my2, clipSize, 0, 2 * Math.PI);
+  }
   ctx2.clip();
-  drawDotted(0, 0, 720, 540, "#ffe");
 
-  for (var i = 0; i < numflakes; i++) {
+  drawLanes(0, 0, 720, 540, "#ffe");
+
+  for (let i = 0; i < antalGobbar; i++) {
     ctx2.save();
     ctx2.translate(gubbar[i].xk, gubbar[i].yk);
 
-    var dx, dy, dist;
+    let dx, dy, dist;
     dx = mx2 - gubbar[i].xk;
     dy = my2 - gubbar[i].yk;
     dist = Math.sqrt(dx * dx + dy * dy);
     if (dist < 20) {
-      drawAmoeba(1);
+      drawGobbe(1);
       if (mouseIsDown) {
         gubbar.splice(i, 1);
-        numflakes--;
+        antalGobbar--;
         points--;
+        clipSize -= 15;
       }
     } else {
-      drawAmoeba(2);
+      drawGobbe(2);
     }
 
     if (gubbar.length == 0) {
@@ -820,7 +829,9 @@ function drawgraphics() {
   }, 30);
 }
 
-function drawDotted(x1, y1, x2, y2, col) {
+console.log(Math.sqrt(1000));
+
+function drawLanes(x1, y1, x2, y2, col) {
   ctx2.beginPath();
   ctx2.moveTo(x1, y1);
   ctx2.lineTo(x2, y1);
@@ -828,7 +839,7 @@ function drawDotted(x1, y1, x2, y2, col) {
   ctx2.lineTo(x1, y2);
   ctx2.closePath();
 
-  var gradient1 = ctx2.createLinearGradient(0, 0, 0, 500);
+  let gradient1 = ctx2.createLinearGradient(0, 0, 0, 500);
   gradient1.addColorStop(0, "#8D5");
   gradient1.addColorStop(0.5, "#AF5");
   gradient1.addColorStop(1, "#182");
@@ -848,8 +859,9 @@ function drawDotted(x1, y1, x2, y2, col) {
 function startupCanvas() {
   let takenFiles = [];
 
-  numflakes = 12;
-  points = numflakes;
+  clipSize = 200;
+  antalGobbar = 12;
+  points = antalGobbar;
 
   function file() {
     let file = Math.round(Math.random() * 11);
@@ -861,22 +873,22 @@ function startupCanvas() {
     return file;
   }
 
-  for (var i = 0; i < numflakes; i++) {
-    gubbar[i] = new Gubbe(
+  for (let i = 0; i < antalGobbar; i++) {
+    gubbar[i] = new Gobbe(
       Math.round(file()) * 60 + 20,
       Math.round(0),
       Math.random() * 2 + 1
     );
   }
 
-  var canvas2 = document.getElementById("myCanvas2");
+  let canvas2 = document.getElementById("myCanvas2");
   canvas2.width = 720;
   canvas2.height = 540;
   ctx2 = canvas2.getContext("2d");
   drawgraphics();
 }
 
-var canvas3 = document.getElementById("myCanvas3");
+let canvas3 = document.getElementById("myCanvas3");
 canvas3.width = window.innerWidth;
 canvas3.height = window.innerHeight;
 let ctx3 = canvas3.getContext("2d");
@@ -927,9 +939,9 @@ function animate() {
 
   ctx3.clearRect(0, 0, canvas3.width, canvas3.height);
 
-  var ev1 = easeInOutQuad(x);
-  var ev2 = easeInOutQuad(y);
-  var ev3 = easeInOutQuad(z);
+  let ev1 = easeInOutQuad(x);
+  let ev2 = easeInOutQuad(y);
+  let ev3 = easeInOutQuad(z);
 
   ctx3.save();
   ctx3.translate(690, 400);
